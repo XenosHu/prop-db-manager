@@ -18,9 +18,6 @@ def app():
         connection = mysql.connector.connect(**config)
         return connection
     
-    # Streamlit app starts here
-    st.title("Real Estate Unit Management")
-    
     # Function to add a unit
     def add_unit():
         with st.form("add_unit_form"):
