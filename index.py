@@ -19,7 +19,7 @@ import search
 
 
 def main():
-    st.sidebar.title("Navigation")
+    st.sidebar.title("Real Estate Database Management Navigation")
     choice = st.sidebar.selectbox("Choose a page", ["Insert Data", "Search Data"])
 
     if choice == "Insert Data":
