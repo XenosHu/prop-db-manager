@@ -103,8 +103,6 @@ def add_unit():
 # Call the function to render the form
 add_unit()
 
-
-
 if __name__ == '__main__':
     app.run(debug=True)
 
