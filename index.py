@@ -6,16 +6,16 @@ import manage
 
 def main():
     st.sidebar.title("Real Estate Database Management Navigation")
-    choice = st.sidebar.selectbox("Choose a page", ["Insert Data", "Manage","Search Data","SQL test"])
+    choice = st.sidebar.selectbox("Choose a page", ["Manage","Insert Data", "Search Data","SQL test"])
 
-    if choice == "Insert Data":
+    if choice == "Manage":
+        manage.app()    
+    elif choice == "Insert Data":
         insert.app()
     elif choice == "SQL test":
         sql_test.app()
     elif choice == "Search Data":
         search.app()
-    elif choice == "Manage":
-        manage.app()
 
 if __name__ == "__main__":
     main()
