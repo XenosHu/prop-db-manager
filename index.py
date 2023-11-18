@@ -45,7 +45,6 @@ def check_password():
         st.error("😕 User not known or password incorrect")
     return False
 
-
 if not check_password():
     st.stop()
 
@@ -56,9 +55,19 @@ def logout():
             del st.session_state[key]
 
 if 'password_correct' in st.session_state and st.session_state['password_correct']:
+    # Create a row of columns
+    # The first column (col1) will be empty and used as a spacer
+    # The second column (col2) will have the logout button
+    col1, col2 = st.columns([0.9, 0.1])  # Adjust the ratio to suit your layout
+
+    with col2:  # This ensures that the following elements are placed in the right column
+        if st.button('Logout'):
+            logout()
+            st.experimental_rerun()
+
     def main():
         st.sidebar.title("System Navigator")
-        choice = st.sidebar.selectbox("Choose a page", ["Manage","Insert Data", "Search Data","SQL test"])
+        choice = st.sidebar.selectbox("Choose a page", ["Manage", "Insert Data", "Search Data", "SQL test"])
     
         if choice == "Manage":
             manage.app()    
@@ -68,11 +77,6 @@ if 'password_correct' in st.session_state and st.session_state['password_correct
             sql_test.app()
         elif choice == "Search Data":
             search.app()
-    
+
     if __name__ == "__main__":
         main()
-    
-    # Logout button
-    if st.button('Logout', type="primary"):
-        logout()
-        st.experimental_rerun()
