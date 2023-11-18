@@ -10,3 +10,4 @@ accelerate
 IPython
 typing
 streamlit-aggrid
+streamlit-authenticator
