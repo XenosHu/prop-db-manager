@@ -11,3 +11,4 @@ IPython
 typing
 streamlit-aggrid
 streamlit-authenticator
+hmac
