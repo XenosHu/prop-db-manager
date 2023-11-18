@@ -48,19 +48,31 @@ def check_password():
 
 if not check_password():
     st.stop()
+
+def logout():
+    # Reset or remove login-related session state variables
+    for key in ['password_correct', 'username', 'password']:
+        if key in st.session_state:
+            del st.session_state[key]
+
+if 'password_correct' in st.session_state and st.session_state['password_correct']:
+    def main():
+        st.sidebar.title("System Navigator")
+        choice = st.sidebar.selectbox("Choose a page", ["Manage","Insert Data", "Search Data","SQL test"])
     
-def main():
-    st.sidebar.title("System Navigator")
-    choice = st.sidebar.selectbox("Choose a page", ["Manage","Insert Data", "Search Data","SQL test"])
-
-    if choice == "Manage":
-        manage.app()    
-    elif choice == "Insert Data":
-        insert.app()
-    elif choice == "SQL test":
-        sql_test.app()
-    elif choice == "Search Data":
-        search.app()
-
-if __name__ == "__main__":
-    main()
+        if choice == "Manage":
+            manage.app()    
+        elif choice == "Insert Data":
+            insert.app()
+        elif choice == "SQL test":
+            sql_test.app()
+        elif choice == "Search Data":
+            search.app()
+    
+    if __name__ == "__main__":
+        main()
+    
+    # Logout button
+    if st.button('Logout', type="primary"):
+        logout()
+        st.experimental_rerun()
