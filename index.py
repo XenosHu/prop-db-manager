@@ -55,16 +55,10 @@ def logout():
             del st.session_state[key]
 
 if 'password_correct' in st.session_state and st.session_state['password_correct']:
-    # Create a row of columns
-    # The first column (col1) will be empty and used as a spacer
-    # The second column (col2) will have the logout button
-    col1, col2 = st.columns([0.9, 0.1])  # Adjust the ratio to suit your layout
+    # Placeholder at the top of the page
+    top_placeholder = st.empty()
 
-    with col2:  # This ensures that the following elements are placed in the right column
-        if st.button('Logout'):
-            logout()
-            st.experimental_rerun()
-
+    # Main content of your app
     def main():
         st.sidebar.title("System Navigator")
         choice = st.sidebar.selectbox("Choose a page", ["Manage", "Insert Data", "Search Data", "SQL test"])
@@ -80,3 +74,11 @@ if 'password_correct' in st.session_state and st.session_state['password_correct
 
     if __name__ == "__main__":
         main()
+
+    # Use the placeholder to display the logout button at the top
+    with top_placeholder.container():
+        col1, col2 = st.columns([0.9, 0.1])
+        with col2:
+            if st.button('Logout'):
+                logout()
+                st.experimental_rerun()
