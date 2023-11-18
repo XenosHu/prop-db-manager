@@ -70,10 +70,9 @@ if 'password_correct' in st.session_state and st.session_state['password_correct
     
     if __name__ == "__main__":
         main()
-    
-    with top_placeholder.container():
-        col1, col2 = st.columns([0.8, 0.2])
-        with col2:
-            if st.button('**Logout**'):
-                logout()
-                st.experimental_rerun()
+
+    col1, col2 = st.columns([0.8, 0.2])
+    with col2:
+        if st.button('**Logout**'):
+            logout()
+            st.experimental_rerun()
