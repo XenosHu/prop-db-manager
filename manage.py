@@ -34,6 +34,7 @@ def app():
     # Set up AgGrid options for editable grid
     gb = GridOptionsBuilder.from_dataframe(df)
     gb.configure_default_column(editable=True, minWidth=150)
+    gb.configure_selection('multiple', use_checkbox=True)
     grid_options = gb.build()
 
     # Display the grid
@@ -46,12 +47,17 @@ def app():
         update_mode='MODEL_CHANGED',
         fit_columns_on_grid_load=True
     )
-    # st.write("Keys in grid_response:", grid_response.keys())
+
     if 'data' in grid_response:
         updated_df = grid_response['data']
         if not updated_df.equals(df):
             st.session_state['updated_df'] = updated_df
-            st.write("Data ready to be updated")
+
+    # Store selected rows for deletion
+    selected = grid_response['selected_rows']
+    if selected:
+        st.session_state['selected_for_deletion'] = selected
+        st.write("Selected rows:", selected)
 
     # Confirm Update Button
     if st.button('Confirm Update'):
@@ -67,11 +73,14 @@ def app():
                 insert_query = f"INSERT INTO Unit ({columns}) VALUES ({values})"
                 execute_write_query(insert_query)
 
+            # Execute deletions
+            if 'selected_for_deletion' in st.session_state:
+                for row in st.session_state['selected_for_deletion']:
+                    delete_query = f"DELETE FROM Unit WHERE Unit_ID = {row['Unit_ID']}" # Replace 'ID' with your primary key column name
+                    execute_write_query(delete_query)
+
             st.success("Database Updated Successfully")
             del st.session_state['updated_df']  # Clear the updated data from the session state
-
-
-
 
 if __name__ == "__main__":
     app()
