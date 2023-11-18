@@ -5,7 +5,7 @@ import sql_test
 import manage
 import hmac
 
-st.sidebar.title("Real Estate Rental Database Management System")
+st.title("Real Estate Rental Database Management System")
 
 def check_password():
     """Returns `True` if the user had a correct password."""
@@ -46,6 +46,7 @@ if not check_password():
     st.stop()
     
 def main():
+    st.sidebar.title("System Navigator")
     choice = st.sidebar.selectbox("Choose a page", ["Manage","Insert Data", "Search Data","SQL test"])
 
     if choice == "Manage":
