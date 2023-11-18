@@ -5,7 +5,7 @@ import sql_test
 import manage
 import hmac
 
-st.title("Real Estate Rental Database Management System")
+st.title("Rental Realtor Database Management System")
 
 def check_password():
     """Returns `True` if the user had a correct password."""
