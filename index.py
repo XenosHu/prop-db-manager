@@ -55,13 +55,9 @@ def logout():
             del st.session_state[key]
 
 if 'password_correct' in st.session_state and st.session_state['password_correct']:
-    # Placeholder at the top of the page
-    top_placeholder = st.empty()
-
-    # Main content of your app
     def main():
         st.sidebar.title("System Navigator")
-        choice = st.sidebar.selectbox("Choose a page", ["Manage", "Insert Data", "Search Data", "SQL test"])
+        choice = st.sidebar.selectbox("Choose a page", ["Manage","Insert Data", "Search Data","SQL test"])
     
         if choice == "Manage":
             manage.app()    
@@ -71,14 +67,13 @@ if 'password_correct' in st.session_state and st.session_state['password_correct
             sql_test.app()
         elif choice == "Search Data":
             search.app()
-
+    
     if __name__ == "__main__":
         main()
-
-    # Use the placeholder to display the logout button at the top
+    
     with top_placeholder.container():
-        col1, col2 = st.columns([0.9, 0.1])
+        col1, col2 = st.columns([0.8, 0.2])
         with col2:
-            if st.button('Logout'):
+            if st.button('**Logout**'):
                 logout()
                 st.experimental_rerun()
