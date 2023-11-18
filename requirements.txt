@@ -9,4 +9,4 @@ transformers
 accelerate
 IPython
 typing
-st-aggrid
+streamlit-aggrid
