@@ -1,21 +1,14 @@
 import streamlit as st
 import mysql.connector
 from datetime import datetime
+from config import DATABASE_CONFIG
 
 def app():
-    st.title("Insert Data")
-    # Database configuration
-    config = {
-        'user': 'propbotics',
-        'password': 'Propbotics123',
-        'host': 'chatbot.c0xmynwsxhmo.us-east-1.rds.amazonaws.com',
-        'database': 'chatbot',
-        'port': 3306
-    }
+    st.title("添加房源")
     
     # Function to get database connection
     def get_db_connection():
-        connection = mysql.connector.connect(**config)
+        connection = mysql.connector.connect(**DATABASE_CONFIG)
         return connection
     
     # Function to add a unit
@@ -23,22 +16,23 @@ def app():
         if 'unit_data' not in st.session_state:
             st.session_state['unit_data'] = None
         with st.form("add_unit_form"):
-            st.write("Add a New Unit")
+            st.write("添加单元")
             
             # Input fields
-            unit_number = st.text_input("Unit Number")
-            rent_price = st.number_input("Rent Price", min_value=0)
-            unit_type = st.text_input("Unit Type")
-            floor_plan_image = st.text_input("Floor Plan Image URL")
-            unit_image = st.text_input("Unit Image URL")
-            unit_video = st.text_input("Unit Video URL")
-            description = st.text_area("Description")
-            broker_fee = st.number_input("Broker Fee", min_value=0)
-            available_date = st.date_input("Available Date")
-            washer_dryer = st.checkbox("Washer Dryer")
-            interest_pp_num = st.number_input("Interest PP Num", min_value=0)
-            building_name = st.text_input("Building Name")
-            unit_form_submitted = st.form_submit_button("Submit Unit")
+            unit_number = st.text_input("单元号")
+            rent_price = st.number_input("租金", min_value=0)
+            unit_type = st.text_input("户型")
+            floor_plan_image = st.text_input("户型图url")
+            unit_image = st.text_input("单元图片url")
+            unit_video = st.text_input("单元视频url")
+            description = st.text_area("单元描述")
+            broker_fee = st.number_input("中介费", min_value=0)
+            available_date = st.date_input("起租日期")
+            washer_dryer = st.checkbox("室内洗烘")
+            interest_pp_num = st.number_input("感兴趣人数", min_value=0)
+            building_name = st.text_input("大楼名称")
+            
+            unit_form_submitted = st.form_submit_button("添加单元")
             
         if unit_form_submitted:
             
@@ -67,66 +61,13 @@ def app():
 
             if not building:
                 st.warning("Building not found in the database. Please enter the Building information.")
-                with st.form("building_form"):
-                    st.write("Building Information")
-
-                    # Additional Building info fields
-                    website = st.text_input("Building Website")
-                    location = st.text_input("Building Location")
-                    address = st.text_input("Building Address")
-                    building_description = st.text_area("Building Description")
-                    building_image = st.text_input("Building Image URL")
-                    building_location_image = st.text_input("Building Location Image URL")
-                    postcode = st.text_input("Postcode")
-                    pet = st.checkbox("Pet Friendly")
-                    application_material = st.text_area("Application Material")
-                    amenity_image = st.text_input("Amenity Image URL")
-                    washer_dryer_image = st.text_input("Washer Dryer Image URL")
-                    building_form_submitted = st.form_submit_button("Submit Building")
-                    
-                    if building_form_submitted:
-                        building_insert_query = """
-                                INSERT INTO Building (
-                                    Building_name, website, location, address, description, 
-                                    building_image, building_location_image, postcode, pet, 
-                                    application_material, amenity_image, washer_dryer_image
-                                ) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
-                            """
-                        cursor.execute(building_insert_query, (
-                            building_name, website, location, address, building_description,
-                            building_image, building_location_image, postcode, pet,
-                            application_material, amenity_image, washer_dryer_image
-                        ))
-                        building_id = cursor.lastrowid
-            
-                        # Insert Unit data
-                        unit_insert_query = """
-                            INSERT INTO Unit (
-                                building_id, unit_number, rent_price, unit_type, floor_plan_image, 
-                                unit_image, unit_video, description, broker_fee, available_date, 
-                                washer_dryer, interest_pp_num
-                            ) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
-                        """
-                        cursor.execute(unit_insert_query, (
-                            building_id, unit_number, rent_price, unit_type, floor_plan_image,
-                            unit_image, unit_video, description, broker_fee, available_date,
-                            washer_dryer, interest_pp_num
-                        ))
-            
-                        # Commit transaction and close connection
-                        connection.commit()
-                        cursor.close()
-                        connection.close()
-            
-                        st.success("Unit and Building added successfully!")
-                        # 清除会话状态中的Unit数据
-                        del st.session_state['unit_data']
+        
             else:
                 building_id = building[0]
                 unit_insert_query = """
                     INSERT INTO Unit (
                         building_id, unit_number, rent_price, unit_type, floor_plan_image, 
-                        unit_image, unit_video, description, broker_fee, available_date, 
+                        unit_image, unit_video, unit_description, broker_fee, available_date, 
                         washer_dryer, interest_pp_num
                     ) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
                 """
@@ -142,6 +83,54 @@ def app():
                 connection.close()
     
                 st.success("Unit added successfully!")
+                
+        with st.form("building_form"):
+            st.write("添加大楼")
+
+            # Additional Building info fields
+            building_name = st.text_input("大楼名称")
+            website = st.text_input("网站")
+            location = st.text_input("区域")
+            address = st.text_input("详细地址")
+            building_description = st.text_area("大楼介绍")
+            building_image = st.text_input("d大楼图片url")
+            building_location_image = st.text_input("大楼位置图片url")
+            postcode = st.text_input("邮编")
+            pet = st.checkbox("宠物友好")
+            application_material = st.text_area("申请材料")
+            amenity_image = st.text_input("设施图片url")
+            washer_dryer_image = st.text_input("洗烘设备url")
+            building_form_submitted = st.form_submit_button("添加大楼")
+            
+            if building_form_submitted:
+                
+                try:
+                    connection = get_db_connection()
+                    cursor = connection.cursor()
+
+                    building_insert_query = """
+                        INSERT INTO Building (
+                            Building_name, website, location, address, building_description, 
+                            building_image, building_location_image, postcode, pet, 
+                            application_material, amenity_image, washer_dryer_image
+                        ) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
+                    """
+                    cursor.execute(building_insert_query, (
+                        building_name, website, location, address, building_description,
+                        building_image, building_location_image, postcode, pet,
+                        application_material, amenity_image, washer_dryer_image
+                    ))
+    
+                    connection.commit()
+                    
+                    st.success("大楼信息已成功添加！")
+                    del st.session_state['unit_data']
+                    
+                except mysql.connector.Error as e:
+                    st.error(f"数据库错误: {e}")
+                finally:
+                    cursor.close()
+                    connection.close()    
 
         
     # Call the function to render the form
