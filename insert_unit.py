@@ -45,7 +45,7 @@ def app():
             interest_pp_num = st.number_input("感兴趣人数", min_value=0)
             
             building_name_options = get_builidng_name()
-            building_name = st.selectbox("大楼名称", building_name_options)
+            building_name = st.selectbox("公寓名称", building_name_options)
 
             unit_form_submitted = st.form_submit_button("添加单元")
             
@@ -73,10 +73,9 @@ def app():
             # Check if the building exists
             cursor.execute("SELECT Building_ID FROM Building WHERE Building_name = %s", (building_name,))
             building = cursor.fetchone()
-            st.write(building)
 
             if not building:
-                st.warning("Building not found in the database. Please enter the Building information.")
+                st.warning("请先添加公寓信息")
         
             else:
                 building_id = building[0]
@@ -98,56 +97,8 @@ def app():
                 cursor.close()
                 connection.close()
     
-                st.success("Unit added successfully!")
+                st.success("单元已成功添加!")
                 
-        with st.form("building_form"):
-            st.write("添加大楼")
-
-            # Additional Building info fields
-            building_name = st.text_input("大楼名称")
-            website = st.text_input("网站")
-            location = st.selectbox("区域",["New Jersey", "Manhattan upper", "Manhattan mid", "Manhattan lower", "LIC", "Brooklyn",'other'])
-            address = st.text_input("详细地址")
-            building_description = st.text_area("大楼介绍")
-            building_image = st.text_input("大楼图片url")
-            building_location_image = st.text_input("大楼位置图片url")
-            postcode = st.text_input("邮编")
-            pet = st.checkbox("宠物友好")
-            application_material = st.text_area("申请材料")
-            amenity_image = st.text_input("设施图片url")
-            washer_dryer_image = st.text_input("洗烘设备url")
-            building_form_submitted = st.form_submit_button("添加大楼")
-            
-            if building_form_submitted:
-                
-                try:
-                    connection = get_db_connection()
-                    cursor = connection.cursor()
-
-                    building_insert_query = """
-                        INSERT INTO Building (
-                            Building_name, website, location, address, building_description, 
-                            building_image, building_location_image, postcode, pet, 
-                            application_material, amenity_image, washer_dryer_image
-                        ) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
-                    """
-                    cursor.execute(building_insert_query, (
-                        building_name, website, location, address, building_description,
-                        building_image, building_location_image, postcode, pet,
-                        application_material, amenity_image, washer_dryer_image
-                    ))
-    
-                    connection.commit()
-                    
-                    st.success("大楼信息已成功添加！")
-                    del st.session_state['unit_data']
-                    
-                except mysql.connector.Error as e:
-                    st.error(f"数据库错误: {e}")
-                finally:
-                    cursor.close()
-                    connection.close()    
-
         
     # Call the function to render the form
     add_unit()

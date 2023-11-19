@@ -53,6 +53,10 @@ def app():
     # Handle Search
     if search_button:
 
+        st.session_state['include_building_only'] = False
+        st.session_state['include_unit'] = False
+        st.session_state['include_subunit'] = False
+
         include_building = building_name != ""
         include_unit = price != 0 or washer_dryer != "Any" or pet != "Any" or location != ["Any"]
         include_subunit = roomtype_subunit != ["Any"]
@@ -156,6 +160,8 @@ def app():
             is_unit_included = st.session_state.get('include_unit', False)
             is_subunit_included = st.session_state.get('include_subunit', False)
 
+           #st.write(is_building_only,is_unit_included,is_subunit_included)
+
             building_columns = [
                 "Building_name", "website", "location", "address",
                 "building_description", "building_image", "building_location_image",
@@ -202,29 +208,30 @@ def app():
                         building_update_query += ", ".join([f"{col} = '{updated_df.at[i, col]}'" for col in updated_df.columns if col in building_columns])
                         building_update_query += f" WHERE Building_ID = {updated_df.at[i, 'Building_ID']}"
                         execute_write_query(building_update_query)
-
-                # Handle deletions
-                if 'selected_for_deletion' in st.session_state:
-                    for row in st.session_state['selected_for_deletion']:
-                        if is_subunit_included:
-                            # DELETE FROM Sub_Unit WHERE sub_unit_id = value
-                            sub_unit_delete_query = f"DELETE FROM Sub_Unit WHERE sub_unit_id = {row['sub_unit_id']}"
-                            execute_write_query(sub_unit_delete_query)
-
-                        elif is_unit_included:
-                            # DELETE FROM Unit WHERE unit_id = value
-                            unit_delete_query = f"DELETE FROM Unit WHERE Unit_ID = {row['Unit_ID']}"
-                            execute_write_query(unit_delete_query)
-
-                        elif is_building_only:
-                            # DELETE FROM Building WHERE building_id = value
-                            building_delete_query = f"DELETE FROM Building WHERE Building_ID = {row['Building_ID']}"
-                            execute_write_query(building_delete_query)
-                            
                 del st.session_state['updated_df']  # Clear the updated data from the session state
-                st.session_state['include_building_only'] = False
-                st.session_state['include_unit'] = False
-                st.session_state['include_subunit'] = False
+
+            # Handle deletions
+            if 'selected_for_deletion' in st.session_state:
+
+                for row in st.session_state['selected_for_deletion']:
+                    if is_subunit_included:
+                        # DELETE FROM Sub_Unit WHERE sub_unit_id = value
+                        sub_unit_delete_query = f"DELETE FROM Sub_Unit WHERE sub_unit_id = {row['sub_unit_id']}"
+                        execute_write_query(sub_unit_delete_query)
+
+                    elif is_unit_included:
+                        # DELETE FROM Unit WHERE unit_id = value
+                        unit_delete_query = f"DELETE FROM Unit WHERE Unit_ID = {row['Unit_ID']}"
+                        execute_write_query(unit_delete_query)
+
+                    elif is_building_only:
+                        # DELETE FROM Building WHERE building_id = value
+                        building_delete_query = f"DELETE FROM Building WHERE Building_ID = {row['Building_ID']}"
+                        execute_write_query(building_delete_query)
+                            
+                            
+                
+
                 st.success("Database Updated Successfully")
 
 
