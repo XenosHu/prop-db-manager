@@ -35,20 +35,28 @@ def app():
         connection.close()
         
     with st.form("search_form"):
-        building_name = st.text_input("大楼名称")
-        price = st.number_input("价格", min_value=0, step=1, format='%d')
-        location_options = ["Any", "New Jersey", "Manhattan upper", "Manhattan mid", "Manhattan lower", "LIC", "Brooklyn"]
-        location = st.multiselect("位置", options=location_options, default=["Any"])
-        washer_dryer = st.selectbox("室内洗烘", ["Any", "Yes", "No"])
-        pet = st.selectbox("宠物", ["Any", "Yes", "No"])
-        
-        roomtype_options = ["Any", 'Studio', '1b1b', '2b2b', '2b1b', '3b2b', '4b3b', '3b3b']
-        roomtype = st.multiselect("户型", options=roomtype_options, default=["Any"])
-        roomtype_subunit = st.multiselect("房型", options=["Any", 'bedroom1', 'bedroom2', 'bedroom3', 'living room'], default=["Any"])
+        col1, col2 = st.columns(2)
 
-        available_start_date = st.date_input("入住时间")
-        available_end_date = st.date_input("至")
+        with col1:
+            # 第一列的字段
+            building_name = st.text_input("大楼名称")
+            min_price = st.number_input("最低价格", min_value=0, step=1, format='%d')
+            max_price = st.number_input("最高价格", min_value=0, step=1, format='%d')
+            location_options = ["Any", "New Jersey", "Manhattan upper", "Manhattan mid", "Manhattan lower", "LIC", "Brooklyn"]
+            location = st.multiselect("位置", options=location_options, default=["Any"])
+            washer_dryer = st.selectbox("室内洗烘", ["Any", "Yes", "No"])
+        
+        with col2:
+            # 第二列的字段
+            pet = st.selectbox("宠物", ["Any", "Yes", "No"])
+            roomtype_options = ["Any", 'Studio', '1b1b', '2b2b', '2b1b', '3b2b', '4b3b', '3b3b']
+            roomtype = st.multiselect("户型", options=roomtype_options, default=["Any"])
+            roomtype_subunit = st.multiselect("房型", options=["Any", 'bedroom1', 'bedroom2', 'bedroom3', 'living room'], default=["Any"])
+            available_start_date = st.date_input("入住时间")
+            available_end_date = st.date_input("至")
+
         search_button = st.form_submit_button("搜索")
+
 
     # Handle Search
     if search_button:
@@ -58,7 +66,7 @@ def app():
         st.session_state['include_subunit'] = False
 
         include_building = building_name != ""
-        include_unit = price != 0 or washer_dryer != "Any" or pet != "Any" or location != ["Any"]
+        include_unit = max_price != 0 or washer_dryer != "Any" or pet != "Any" or location != ["Any"]
         include_subunit = roomtype_subunit != ["Any"]
         
         search_query = "SELECT "
@@ -97,8 +105,8 @@ def app():
     
         if building_name:
             search_conditions.append(f"Building.Building_name LIKE '%{building_name}%'")
-        if price:  # Assuming this refers to rent_price in Unit table
-            search_conditions.append(f"Unit.rent_price <= {price}")
+        if min_price and max_price:
+            search_conditions.append(f"Unit.rent_price BETWEEN {min_price} AND {max_price}")
         if "Any" not in location:
             location_conditions = ["Building.location LIKE '%{}%'".format(loc) for loc in location]
             search_conditions.append("({})".format(" OR ".join(location_conditions)))
@@ -154,7 +162,7 @@ def app():
             #st.write("Selected rows:", selected)
 
         # Confirm Update Button
-        if st.button('Confirm Update'):
+        if st.button('更新/删除'):
 
             is_building_only = st.session_state.get('include_building_only', False)
             is_unit_included = st.session_state.get('include_unit', False)
@@ -229,9 +237,7 @@ def app():
                         building_delete_query = f"DELETE FROM Building WHERE Building_ID = {row['Building_ID']}"
                         execute_write_query(building_delete_query)
                             
-                            
-                
-
+        
                 st.success("Database Updated Successfully")
 
 
