@@ -1,14 +1,12 @@
 import streamlit as st
 import mysql.connector
 import pandas as pd
-from config import get_database_config
-
+from config import DATABASE_CONFIG
 def app():
     st.title("Search Data")
 
     # Function to get database connection
     def get_db_connection():
-        DATABASE_CONFIG = get_database_config()
         connection = mysql.connector.connect(**DATABASE_CONFIG)
         return connection
 
