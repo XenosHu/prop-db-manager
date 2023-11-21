@@ -1,7 +1,7 @@
 import streamlit as st
 import mysql.connector
 from datetime import datetime
-from config import DATABASE_CONFIG
+from config import get_database_config
 
 def app():
     st.title("添加单元")
