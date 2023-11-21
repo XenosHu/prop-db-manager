@@ -1,5 +1,6 @@
 import streamlit as st
-import insert
+import insert_build
+import insert_unit
 import search
 import sql_test
 import manage
@@ -55,19 +56,19 @@ def logout():
 
 if 'password_correct' in st.session_state and st.session_state['password_correct']:
     def main():
-        st.title("Rental Realtor Database Management System")
-        st.sidebar.title("System Navigator")
-        choice = st.sidebar.selectbox("Choose a page", ["Manage","Insert Data", "Search Data","SQL test"])
+        st.title("房源数据管理")
+        st.sidebar.title("目录")
+        choice = st.sidebar.selectbox("选择", ["添加公寓", "添加单元", "搜索房源", "测试"])
     
-        if choice == "Manage":
-            manage.app()    
-        elif choice == "Insert Data":
-            insert.app()
-        elif choice == "SQL test":
-            sql_test.app()
-        elif choice == "Search Data":
+        if choice == "添加公寓":
+            insert_build.app()
+        elif choice == "添加单元":
+            insert_unit.app()
+        elif choice == "搜索房源":
             search.app()
-    
+        elif choice == "测试":
+            sql_test.app()
+        
     if __name__ == "__main__":
         main()
 
