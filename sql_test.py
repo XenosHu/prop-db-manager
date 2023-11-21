@@ -1,22 +1,15 @@
 import streamlit as st
 import mysql.connector
 import pandas as pd
+from config.py import get_database_config
 
 def app():
     st.title("Search Data")
 
-    # Database configuration
-    config = {
-        'user': 'propbotics',
-        'password': 'Propbotics123',
-        'host': 'chatbot.c0xmynwsxhmo.us-east-1.rds.amazonaws.com',
-        'database': 'chatbot',
-        'port': 3306
-    }
-
     # Function to get database connection
     def get_db_connection():
-        connection = mysql.connector.connect(**config)
+        DATABASE_CONFIG = get_database_config()
+        connection = mysql.connector.connect(**DATABASE_CONFIG)
         return connection
 
     # Text area for SQL query
