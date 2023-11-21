@@ -74,7 +74,7 @@ if 'password_correct' in st.session_state and st.session_state['password_correct
     if __name__ == "__main__":
         main()
 
-    col1, col2 = st.columns([0.9, 0.1])
+    col1, col2 = st.columns([0.89, 0.11])
     with col2:
         if st.button('**Logout**', type="primary"):
             logout()
