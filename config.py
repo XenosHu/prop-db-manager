@@ -1,6 +1,6 @@
 # config.py
 
-
+import streamlit as st
 db_user = st.secrets["db_config"]["user"]
 db_password = st.secrets["db_config"]["password"]
 db_host = st.secrets["db_config"]["host"]
