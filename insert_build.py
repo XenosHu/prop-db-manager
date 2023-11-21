@@ -35,8 +35,8 @@ def app():
                 building_name = st.text_input("大楼名称")
                 location = st.selectbox("区域", ["New Jersey", "Manhattan upper", "Manhattan mid", "Manhattan lower", "LIC", "Brooklyn", 'other'])
                 address = st.text_input("详细地址")
-                building_description = st.text_area("大楼介绍")
                 website = st.text_input("大楼网站")
+                building_description = st.text_area("大楼介绍")
                 postcode = st.text_input("邮编")
                 pet = st.checkbox("宠物友好")
 
