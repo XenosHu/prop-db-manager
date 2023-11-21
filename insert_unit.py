@@ -39,8 +39,9 @@ def app():
                 unit_number = st.text_input("单元号")
                 rent_price = st.number_input("租金", min_value=0)
                 unit_type = st.selectbox("户型", ['Studio', '1b1b', '2b2b', '2b1b', '3b2b', '3b3b', '4b3b', 'other'])
-                description = st.text_area("单元描述")
                 available_date = st.date_input("起租日期")
+                description = st.text_area("单元描述")
+                
 
             with col2:
                 # Column 2 fields
