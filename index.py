@@ -85,7 +85,7 @@ if 'password_correct' in st.session_state and st.session_state['password_correct
     #         logout()
     #         st.experimental_rerun()
 
-    col1, col2, col3 = st.columns([0.45, 0.1, 0.45])
+    col1, col2, col3 = st.columns([0.4, 0.2, 0.4])
     with col2:
         if st.button('**Logout**', type="primary"):
             logout()
