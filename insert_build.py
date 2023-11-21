@@ -38,7 +38,7 @@ def app():
                 website = st.text_input("大楼网站")
                 building_description = st.text_area("大楼介绍")
                 postcode = st.text_input("邮编")
-                pet = st.selectbox("宠物友好",["Any","Yes", "No"])
+                
 
             with col2:
                 # Column 2 fields
@@ -46,6 +46,7 @@ def app():
                 building_location_image = st.text_input("大楼位置图片url")
                 amenity_image = st.text_input("设施图片url")
                 washer_dryer_image = st.text_input("洗烘设备url")
+                pet = st.selectbox("宠物友好",["Any","Yes", "No"])
                 application_material = st.text_area("申请材料")
 
             building_form_submitted = st.form_submit_button("添加公寓")
