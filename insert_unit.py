@@ -34,22 +34,22 @@ def app():
 
             with col1:
                 # Column 1 fields
+                building_name_options = get_builidng_name()
+                building_name = st.selectbox("公寓名称", building_name_options)
                 unit_number = st.text_input("单元号")
                 rent_price = st.number_input("租金", min_value=0)
                 unit_type = st.selectbox("户型", ['Studio', '1b1b', '2b2b', '2b1b', '3b2b', '3b3b', '4b3b', 'other'])
-                floor_plan_image = st.text_input("户型图url")
                 description = st.text_area("单元描述")
                 available_date = st.date_input("起租日期")
 
             with col2:
                 # Column 2 fields
+                floor_plan_image = st.text_input("户型图url")
                 unit_image = st.text_input("单元图片url")
                 unit_video = st.text_input("单元视频url")
                 broker_fee = st.number_input("中介费", min_value=0)
                 washer_dryer = st.checkbox("室内洗烘")
                 interest_pp_num = st.number_input("感兴趣人数", min_value=0)
-                building_name_options = get_builidng_name()
-                building_name = st.selectbox("公寓名称", building_name_options)
 
             unit_form_submitted = st.form_submit_button("添加单元")
             
