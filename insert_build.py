@@ -35,18 +35,18 @@ def app():
                 building_name = st.text_input("大楼名称")
                 location = st.selectbox("区域", ["New Jersey", "Manhattan upper", "Manhattan mid", "Manhattan lower", "LIC", "Brooklyn", 'other'])
                 address = st.text_input("详细地址")
-                building_image = st.text_input("大楼图片url")
+                building_description = st.text_area("大楼介绍")
+                website = st.text_input("大楼网站")
                 postcode = st.text_input("邮编")
                 pet = st.checkbox("宠物友好")
 
             with col2:
                 # Column 2 fields
-                website = st.text_input("网站")
-                building_description = st.text_area("大楼介绍")
+                building_image = st.text_input("大楼图片url")
                 building_location_image = st.text_input("大楼位置图片url")
-                application_material = st.text_area("申请材料")
                 amenity_image = st.text_input("设施图片url")
                 washer_dryer_image = st.text_input("洗烘设备url")
+                application_material = st.text_area("申请材料")
 
             building_form_submitted = st.form_submit_button("添加公寓")
             
