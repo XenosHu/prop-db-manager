@@ -48,8 +48,8 @@ def app():
                 unit_image = st.text_input("单元图片url")
                 unit_video = st.text_input("单元视频url")
                 broker_fee = st.number_input("中介费", min_value=0)
-                washer_dryer = st.checkbox("室内洗烘")
                 interest_pp_num = st.number_input("感兴趣人数", min_value=0)
+                washer_dryer = st.selectbox("室内洗烘",["Yes", "No"])
 
             unit_form_submitted = st.form_submit_button("添加单元")
             
