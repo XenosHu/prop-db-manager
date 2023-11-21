@@ -1,7 +1,8 @@
 import streamlit as st
 import mysql.connector
 import pandas as pd
-from config.py import get_database_config
+# from config import get_database_config
+import config
 
 def app():
     st.title("Search Data")
