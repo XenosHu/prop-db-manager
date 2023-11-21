@@ -38,7 +38,7 @@ def app():
                 website = st.text_input("大楼网站")
                 building_description = st.text_area("大楼介绍")
                 postcode = st.text_input("邮编")
-                pet = st.checkbox("宠物友好")
+                pet = st.selectbox("宠物友好",["Yes", "No"])
 
             with col2:
                 # Column 2 fields
