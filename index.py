@@ -1,6 +1,6 @@
 import streamlit as st
-import insert_build
-import insert_unit
+# import insert_build
+# import insert_unit
 import search
 import sql_test
 import manage
