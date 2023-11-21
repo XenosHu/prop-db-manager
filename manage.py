@@ -2,8 +2,8 @@ import streamlit as st
 import mysql.connector
 import pandas as pd
 from st_aggrid import AgGrid, GridOptionsBuilder
-# from config import get_database_config
-import config
+from config import get_database_config
+
 
 def app():
     st.title("Property Management Dashboard")
