@@ -5,7 +5,6 @@ import insert_unit
 import search
 import sql_test
 import manage
-import hmac
 
 
 def check_password():
