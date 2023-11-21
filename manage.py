@@ -9,6 +9,7 @@ def app():
 
     # Function to get database connection
     def get_db_connection():
+        DATABASE_CONFIG = get_database_config()
         connection = mysql.connector.connect(**DATABASE_CONFIG)
         return connection
 
