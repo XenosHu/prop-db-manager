@@ -1,7 +1,7 @@
 import streamlit as st
 import mysql.connector
 from datetime import datetime
-from config import get_database_config
+from config import DATABASE_CONFIG
 
 
 def app():
