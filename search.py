@@ -2,7 +2,7 @@ import streamlit as st
 import mysql.connector
 import pandas as pd
 from st_aggrid import AgGrid, GridOptionsBuilder
-from config import DATABASE_CONFIG
+from config import get_database_config
 
 def app():
     st.title("搜索房源")
