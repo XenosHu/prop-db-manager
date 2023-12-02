@@ -26,9 +26,10 @@ def app():
         return building_name_options
         
     def check_and_create_trigger(connection):
+        
         cursor = connection.cursor()
         # Check if the trigger already exists
-        cursor.execute("SHOW TRIGGERS LIKE 'after_unit_insert'")
+        cursor.execute("SELECT TRIGGER_NAME FROM information_schema.TRIGGERS WHERE TRIGGER_SCHEMA = 'chatbot' AND TRIGGER_NAME = 'after_unit_insert'")
         if cursor.fetchone() is None:
             # Trigger does not exist, so create it
             trigger_command = """
