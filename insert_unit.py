@@ -80,7 +80,7 @@ def app():
                             """
             cursor.execute(trigger_command)
             connection.commit()
-        cursor.close()
+        # cursor.close()
 
     
     # Function to add a unit
