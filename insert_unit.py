@@ -34,7 +34,7 @@ def app():
             # Trigger does not exist, so create it
             trigger_command = """
                             CREATE TRIGGER after_unit_insert
-                            AFTER INSERT ON Unit_test
+                            AFTER INSERT ON Unit
                             FOR EACH ROW
                             BEGIN
                                 DECLARE bedroom_count INT;
@@ -43,14 +43,14 @@ def app():
                                 DECLARE i INT DEFAULT 1;
                             
                                 IF NEW.unit_type = 'Studio' THEN
-                                    INSERT INTO sub_unit_test (unit_ID, room_type, sub_rent_price, use_livingroom)
+                                    INSERT INTO sub_unit (unit_ID, room_type, sub_rent_price, use_livingroom)
                                     VALUES (NEW.Unit_ID, 'Studio', NEW.rent_price, FALSE);
                                 ELSE
                                     SET bedroom_count = CAST(SUBSTRING(NEW.unit_type, 1, 1) AS UNSIGNED);
                                     SET total_division = IF(NEW.unit_type = '1b1b', 2, bedroom_count + 1);
                             
                                     IF NEW.unit_type = '1b1b' THEN
-                                        INSERT INTO sub_unit_test (unit_ID, room_type, sub_rent_price, use_livingroom)
+                                        INSERT INTO sub_unit (unit_ID, room_type, sub_rent_price, use_livingroom)
                                         VALUES (NEW.Unit_ID, 'bedroom1', NEW.rent_price / 2 + 200, TRUE),
                                                (NEW.Unit_ID, 'living_room', NEW.rent_price / 2 - 200, TRUE),
                                                (NEW.Unit_ID, 'bedroom1', NEW.rent_price, FALSE);
@@ -58,19 +58,19 @@ def app():
                                         SET base_rent_per_room = NEW.rent_price / total_division;
                             
                                         WHILE i <= bedroom_count DO
-                                            INSERT INTO sub_unit_test (unit_ID, room_type, sub_rent_price, use_livingroom)
+                                            INSERT INTO sub_unit (unit_ID, room_type, sub_rent_price, use_livingroom)
                                             VALUES (NEW.Unit_ID, CONCAT('bedroom', i), base_rent_per_room + IF(i = 1, 200, 0), TRUE);
                                             SET i = i + 1;
                                         END WHILE;
                             
-                                        INSERT INTO sub_unit_test (unit_ID, room_type, sub_rent_price, use_livingroom)
+                                        INSERT INTO sub_unit (unit_ID, room_type, sub_rent_price, use_livingroom)
                                         VALUES (NEW.Unit_ID, 'living_room', base_rent_per_room - 200, TRUE);
                             
                                         SET i = 1;
                                         SET base_rent_per_room = NEW.rent_price / bedroom_count;
                             
                                         WHILE i <= bedroom_count DO
-                                            INSERT INTO sub_unit_test (unit_ID, room_type, sub_rent_price, use_livingroom)
+                                            INSERT INTO sub_unit (unit_ID, room_type, sub_rent_price, use_livingroom)
                                             VALUES (NEW.Unit_ID, CONCAT('bedroom', i), base_rent_per_room, FALSE);
                                             SET i = i + 1;
                                         END WHILE;
