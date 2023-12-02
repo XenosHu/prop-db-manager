@@ -13,17 +13,74 @@ def app():
         return connection
 
     def get_builidng_name():
-            connection = get_db_connection()
-            cursor = connection.cursor()
-            building_name_options = ['other']
-            # Check if the building exists
-            cursor.execute("SELECT Building_name FROM Building")
-            building_names = cursor.fetchall()
-            for building_name in building_names:
-                building_name_options.append(building_name[0])
+        connection = get_db_connection()
+        cursor = connection.cursor()
+        building_name_options = ['other']
+        # Check if the building exists
+        cursor.execute("SELECT Building_name FROM Building")
+        building_names = cursor.fetchall()
+        for building_name in building_names:
+            building_name_options.append(building_name[0])
 
-            connection.close()
-            return building_name_options
+        connection.close()
+        return building_name_options
+        
+    def check_and_create_trigger(connection):
+        cursor = connection.cursor()
+        # Check if the trigger already exists
+        cursor.execute("SHOW TRIGGERS LIKE 'after_unit_insert'")
+        if cursor.fetchone() is None:
+            # Trigger does not exist, so create it
+            trigger_command = """
+                            CREATE TRIGGER after_unit_insert
+                            AFTER INSERT ON Unit_test
+                            FOR EACH ROW
+                            BEGIN
+                                DECLARE bedroom_count INT;
+                                DECLARE total_division INT;
+                                DECLARE base_rent_per_room FLOAT;
+                                DECLARE i INT DEFAULT 1;
+                            
+                                IF NEW.unit_type = 'Studio' THEN
+                                    INSERT INTO sub_unit_test (unit_ID, room_type, sub_rent_price, use_livingroom)
+                                    VALUES (NEW.Unit_ID, 'Studio', NEW.rent_price, FALSE);
+                                ELSE
+                                    SET bedroom_count = CAST(SUBSTRING(NEW.unit_type, 1, 1) AS UNSIGNED);
+                                    SET total_division = IF(NEW.unit_type = '1b1b', 2, bedroom_count + 1);
+                            
+                                    IF NEW.unit_type = '1b1b' THEN
+                                        INSERT INTO sub_unit_test (unit_ID, room_type, sub_rent_price, use_livingroom)
+                                        VALUES (NEW.Unit_ID, 'bedroom1', NEW.rent_price / 2 + 200, TRUE),
+                                               (NEW.Unit_ID, 'living_room', NEW.rent_price / 2 - 200, TRUE),
+                                               (NEW.Unit_ID, 'bedroom1', NEW.rent_price, FALSE);
+                                    ELSE
+                                        SET base_rent_per_room = NEW.rent_price / total_division;
+                            
+                                        WHILE i <= bedroom_count DO
+                                            INSERT INTO sub_unit_test (unit_ID, room_type, sub_rent_price, use_livingroom)
+                                            VALUES (NEW.Unit_ID, CONCAT('bedroom', i), base_rent_per_room + IF(i = 1, 200, 0), TRUE);
+                                            SET i = i + 1;
+                                        END WHILE;
+                            
+                                        INSERT INTO sub_unit_test (unit_ID, room_type, sub_rent_price, use_livingroom)
+                                        VALUES (NEW.Unit_ID, 'living_room', base_rent_per_room - 200, TRUE);
+                            
+                                        SET i = 1;
+                                        SET base_rent_per_room = NEW.rent_price / bedroom_count;
+                            
+                                        WHILE i <= bedroom_count DO
+                                            INSERT INTO sub_unit_test (unit_ID, room_type, sub_rent_price, use_livingroom)
+                                            VALUES (NEW.Unit_ID, CONCAT('bedroom', i), base_rent_per_room, FALSE);
+                                            SET i = i + 1;
+                                        END WHILE;
+                                    END IF;
+                                END IF;
+                            END;
+                            """
+            cursor.execute(trigger_command)
+            connection.commit()
+        cursor.close()
+
     
     # Function to add a unit
     def add_unit():
@@ -54,8 +111,7 @@ def app():
 
             unit_form_submitted = st.form_submit_button("添加单元")
             
-        if unit_form_submitted:
-            
+        if unit_form_submitted:         
                 # 保存Unit数据到会话状态
             st.session_state['unit_data'] = {
                     'unit_number': unit_number,
@@ -73,6 +129,7 @@ def app():
                 }
                 
             connection = get_db_connection()
+            
             cursor = connection.cursor()
 
             # Check if the building exists
@@ -101,30 +158,13 @@ def app():
                 connection.commit()
                 cursor.close()
                 connection.close()
+                check_and_create_trigger(connection)
     
                 st.success("单元已成功添加!")
                 
         
     # Call the function to render the form
     add_unit()
-
-    # def check_and_create_trigger(connection):
-    # cursor = connection.cursor()
-    # # Check if the trigger already exists
-    # cursor.execute("SHOW TRIGGERS LIKE 'after_unit_insert'")
-    # if cursor.fetchone() is None:
-    #     # Trigger does not exist, so create it
-    #     trigger_command = """
-    #     CREATE TRIGGER after_unit_insert
-    #     AFTER INSERT ON Unit_test
-    #     FOR EACH ROW
-    #     BEGIN
-    #         -- Your trigger logic here
-    #     END;
-    #     """
-    #     cursor.execute(trigger_command)
-    #     connection.commit()
-    # cursor.close()
 
 if __name__ == "__main__":
     app()
