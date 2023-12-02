@@ -156,9 +156,10 @@ def app():
     
                 # Commit transaction and close connection
                 connection.commit()
+                check_and_create_trigger(connection)
                 cursor.close()
                 connection.close()
-                check_and_create_trigger(connection)
+                
     
                 st.success("单元已成功添加!")
                 
