@@ -108,6 +108,24 @@ def app():
     # Call the function to render the form
     add_unit()
 
+    # def check_and_create_trigger(connection):
+    # cursor = connection.cursor()
+    # # Check if the trigger already exists
+    # cursor.execute("SHOW TRIGGERS LIKE 'after_unit_insert'")
+    # if cursor.fetchone() is None:
+    #     # Trigger does not exist, so create it
+    #     trigger_command = """
+    #     CREATE TRIGGER after_unit_insert
+    #     AFTER INSERT ON Unit_test
+    #     FOR EACH ROW
+    #     BEGIN
+    #         -- Your trigger logic here
+    #     END;
+    #     """
+    #     cursor.execute(trigger_command)
+    #     connection.commit()
+    # cursor.close()
+
 if __name__ == "__main__":
     app()
 
