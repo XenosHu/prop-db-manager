@@ -12,7 +12,7 @@ def app():
         connection = mysql.connector.connect(**DATABASE_CONFIG)
         return connection
 
-    def get_builidng_name():
+    def get_building_name():
         connection = get_db_connection()
         cursor = connection.cursor()
         building_name_options = ['other']
@@ -92,7 +92,7 @@ def app():
 
             with col1:
                 # Column 1 fields
-                building_name_options = get_builidng_name()
+                building_name_options = get_building_name()
                 building_name = st.selectbox("公寓名称", building_name_options)
                 unit_number = st.text_input("单元号")
                 rent_price = st.number_input("租金", min_value=0)
