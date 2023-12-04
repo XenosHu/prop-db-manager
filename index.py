@@ -9,6 +9,7 @@ import hmac
 
 
 st.title("房源数据管理")
+st.set_page_config(layout="wide", initial_sidebar_state="auto")
 
 def check_password():
     """Returns `True` if the user had a correct password."""
@@ -59,7 +60,7 @@ def logout():
 
 if 'password_correct' in st.session_state and st.session_state['password_correct']:
     def main():
-        st.set_page_config(layout="wide", initial_sidebar_state="auto")
+        # st.set_page_config(layout="wide", initial_sidebar_state="auto")
         
         st.sidebar.title("目录")
         choice = st.sidebar.selectbox("选择", ["添加公寓", "添加单元", "搜索房源", "测试"])
