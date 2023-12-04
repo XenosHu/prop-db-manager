@@ -107,7 +107,7 @@ def app():
                 unit_image = st.text_input("单元图片URL")
                 unit_video = st.text_input("单元视频URL")
                 floorplan_image = st.text_input("户型图像URL")
-                direction = st.selectbox("房间朝向", ["N", "S", "E", "W", "NE", "NW", "SE", "SW"])
+                direction = st.selectbox("房间朝向", [" ", "N", "S", "E", "W", "NE", "NW", "SE", "SW"])
                 concession = st.text_input("优惠")
                 broker_fee = st.number_input("中介费", min_value=0)
                 interest_pp_num = st.number_input("感兴趣人数", min_value=0)
