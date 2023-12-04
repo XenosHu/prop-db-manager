@@ -82,7 +82,7 @@ def app():
     #         connection.commit()
     #     # cursor.close()
 
-     def add_unit():
+    def add_unit():
         if 'unit_data' not in st.session_state:
             st.session_state['unit_data'] = None
         with st.form("add_unit_form"):
