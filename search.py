@@ -76,7 +76,7 @@ def app():
         if include_subunit:
             # Query to include Sub_Unit, Unit, and Building
             search_query += """sub_unit.*, Unit.*, 
-                                Building.building_name,
+                                Building.building_name AS 公寓名称,
                                 Building.location,
                                 Building.address,
                                 Building.city,
