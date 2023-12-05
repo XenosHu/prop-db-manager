@@ -76,7 +76,7 @@ def app():
         if include_subunit:
             # Query to include Sub_Unit, Unit, and Building
             search_query += "Sub_Unit.*, Unit.*, Building.* FROM Sub_Unit "
-            join_conditions += "JOIN Unit ON Sub_Unit.unit_ID = Unit.Unit_ID JOIN Building ON Unit.building_id = Building.building_ID "
+            join_conditions += "JOIN Unit ON Sub_Unit.unit_ID = Unit.unit_ID JOIN Building ON Unit.building_id = Building.building_ID "
             roomtype_conditions = ["Sub_Unit.room_type = '{}'".format(rt) for rt in roomtype_subunit]
             search_conditions.append("({})".format(" OR ".join(roomtype_conditions)))
             if available_start_date:
@@ -205,7 +205,7 @@ def app():
                         # Construct and execute UPDATE query for Unit
                         unit_update_query = "UPDATE Unit SET "
                         unit_update_query += ", ".join([f"{col} = '{updated_df.at[i, col]}'" for col in updated_df.columns if col in unit_columns])
-                        unit_update_query += f" WHERE Unit_ID = {updated_df.at[i, 'Unit_ID']}"
+                        unit_update_query += f" WHERE unit_ID = {updated_df.at[i, 'unit_ID']}"
                         execute_write_query(unit_update_query)
 
                     if is_building_only:
@@ -227,7 +227,7 @@ def app():
 
                     elif is_unit_included:
                         # DELETE FROM Unit WHERE unit_id = value
-                        unit_delete_query = f"DELETE FROM Unit WHERE Unit_ID = {row['Unit_ID']}"
+                        unit_delete_query = f"DELETE FROM Unit WHERE unit_ID = {row['unit_ID']}"
                         execute_write_query(unit_delete_query)
 
                     elif is_building_only:
