@@ -93,7 +93,7 @@ def app():
                         building_id, unit_number, rent_price, floorplan, floorplan_image, 
                         size, concession, direction,unit_video, unit_description, broker_fee,  
                         available_date, washer_dryer, interest_pp_num
-                    ) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s，%s, %s, %s)
+                    ) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s，%s, %s)
                 """
                 cursor.execute(unit_insert_query, (
                     building_id, unit_number, rent_price, floorplan, floorplan_image, 
