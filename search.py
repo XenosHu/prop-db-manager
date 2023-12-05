@@ -20,7 +20,7 @@ def app():
             query = """
             SELECT Unit.*, Building.building_name, Building.location
             FROM Unit
-            JOIN Building ON Unit.building_id = Building.building_ID
+            JOIN Building ON Unit.building_id = Building.building_id
             """
         df = pd.read_sql(query, connection)
         connection.close()
@@ -92,7 +92,7 @@ def app():
                                 Building.source,
                                 Building.building_image,
                                 Building.website FROM sub_unit """
-            join_conditions += "JOIN Unit ON sub_unit.unit_ID = Unit.unit_id JOIN Building ON Unit.building_id = Building.building_id "
+            join_conditions += "JOIN Unit ON sub_unit.Unit_ID = Unit.unit_id JOIN Building ON Unit.building_id = Building.building_id "
             roomtype_conditions = ["sub_unit.room_type = '{}'".format(rt) for rt in roomtype_subunit]
             search_conditions.append("({})".format(" OR ".join(roomtype_conditions)))
             if available_start_date:
@@ -237,14 +237,14 @@ def app():
                         # Construct and execute UPDATE query for Unit
                         unit_update_query = "UPDATE Unit SET "
                         unit_update_query += ", ".join([f"{col} = '{updated_df.at[i, col]}'" for col in updated_df.columns if col in unit_columns])
-                        unit_update_query += f" WHERE unit_ID = {updated_df.at[i, 'unit_ID']}"
+                        unit_update_query += f" WHERE unit_id = {updated_df.at[i, 'unit_id']}"
                         execute_write_query(unit_update_query)
 
                     if is_building_only:
                         # Construct and execute UPDATE query for Building
                         building_update_query = "UPDATE Building SET "
                         building_update_query += ", ".join([f"{col} = '{updated_df.at[i, col]}'" for col in updated_df.columns if col in building_columns])
-                        building_update_query += f" WHERE Building_ID = {updated_df.at[i, 'Building_ID']}"
+                        building_update_query += f" WHERE building_id = {updated_df.at[i, 'building_id']}"
                         execute_write_query(building_update_query)
                 del st.session_state['updated_df']  # Clear the updated data from the session state
 
@@ -259,12 +259,12 @@ def app():
 
                     elif is_unit_included:
                         # DELETE FROM Unit WHERE unit_id = value
-                        unit_delete_query = f"DELETE FROM Unit WHERE unit_ID = {row['unit_ID']}"
+                        unit_delete_query = f"DELETE FROM Unit WHERE unit_id = {row['unit_id']}"
                         execute_write_query(unit_delete_query)
 
                     elif is_building_only:
                         # DELETE FROM Building WHERE building_id = value
-                        building_delete_query = f"DELETE FROM Building WHERE Building_ID = {row['Building_ID']}"
+                        building_delete_query = f"DELETE FROM Building WHERE building_id = {row['building_id']}"
                         execute_write_query(building_delete_query)
                             
         
