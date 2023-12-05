@@ -256,7 +256,7 @@ def app():
                 for row in st.session_state['selected_for_deletion']:
                     if is_subunit_included:
                         # DELETE FROM Sub_Unit WHERE sub_unit_id = value
-                        sub_unit_delete_query = f"DELETE FROM Sub_Unit WHERE sub_unit_id = {row['sub_unit_id']}"
+                        sub_unit_delete_query = f"DELETE FROM sub_unit WHERE sub_unit_id = {row['sub_unit_id']}"
                         execute_write_query(sub_unit_delete_query)
 
                     elif is_unit_included:
