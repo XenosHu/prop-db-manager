@@ -120,7 +120,7 @@ def app():
                                 Building.guarantee_policy,
                                 Building.source,
                                 Building.building_image,
-                                Building.website FROM Unit "
+                                Building.website FROM Unit """
             join_conditions += "JOIN Building ON Unit.building_id = Building.building_id "
             if available_start_date:
                 search_conditions.append(f"Unit.available_date >= '{available_start_date}'")
