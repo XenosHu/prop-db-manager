@@ -44,14 +44,14 @@ def app():
             max_price = st.number_input("最高价格", min_value=0, step=1, format='%d')
             location_options = ["Any", "New Jersey", "Manhattan upper", "Manhattan mid", "Manhattan lower", "LIC", "Brooklyn"]
             location = st.multiselect("位置", options=location_options, default=["Any"])
-            washer_dryer = st.selectbox("室内洗烘", ["Any", "Yes", "No"])
+            washer_dryer = st.selectbox("室内洗烘", ["Any", "Yes"])
         
         with col2:
             # 第二列的字段
-            pet = st.selectbox("宠物", ["Any", "Yes", "No"])
+            pet = st.selectbox("宠物", ["No","Yes"])
             roomtype_options = ["Any", 'Studio', '1b1b', '2b2b', '2b1b', '3b2b', '4b3b', '3b3b']
             roomtype = st.multiselect("户型", options=roomtype_options, default=["Any"])
-            roomtype_subunit = st.multiselect("房型", options=["Any", 'bedroom1', 'bedroom2', 'bedroom3', 'living room'], default=["Any"])
+            roomtype_subunit = st.multiselect("房型", options=["Any", "All",'bedroom1', 'bedroom2', 'bedroom3', 'living room'], default=["Any"])
             available_start_date = st.date_input("入住时间")
             available_end_date = st.date_input("至")
 
@@ -66,7 +66,7 @@ def app():
         st.session_state['include_subunit'] = False
 
         include_building = building_name != ""
-        include_unit = max_price != 0 or washer_dryer != "Any" or pet != "Any" or location != ["Any"]
+        include_unit = min_price!= 0 or max_price != 0 or washer_dryer != "Any" or pet != "Any" or location != ["Any"]
         include_subunit = roomtype_subunit != ["Any"]
         
         search_query = "SELECT "
@@ -93,6 +93,8 @@ def app():
                                 Building.building_image,
                                 Building.website FROM sub_unit """
             join_conditions += "JOIN Unit ON sub_unit.Unit_ID = Unit.unit_id JOIN Building ON Unit.building_id = Building.building_id "
+            if roomtype_subunit == ['All']:
+                roomtype_subunit = ['bedroom1', 'bedroom2', 'bedroom3', 'living room']
             roomtype_conditions = ["sub_unit.room_type = '{}'".format(rt) for rt in roomtype_subunit]
             search_conditions.append("({})".format(" OR ".join(roomtype_conditions)))
             if available_start_date:
