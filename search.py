@@ -75,9 +75,9 @@ def app():
 
         if include_subunit:
             # Query to include Sub_Unit, Unit, and Building
-            search_query += "Sub_Unit.*, Unit.*, Building.* FROM Sub_Unit "
-            join_conditions += "JOIN Unit ON Sub_Unit.unit_ID = Unit.unit_ID JOIN Building ON Unit.building_id = Building.building_ID "
-            roomtype_conditions = ["Sub_Unit.room_type = '{}'".format(rt) for rt in roomtype_subunit]
+            search_query += "sub_unit.*, Unit.*, Building.* FROM sub_unit "
+            join_conditions += "JOIN Unit ON sub_unit.unit_ID = Unit.unit_ID JOIN Building ON Unit.building_id = Building.building_ID "
+            roomtype_conditions = ["sub_unit.room_type = '{}'".format(rt) for rt in roomtype_subunit]
             search_conditions.append("({})".format(" OR ".join(roomtype_conditions)))
             if available_start_date:
                 search_conditions.append(f"Unit.available_date >= '{available_start_date}'")
