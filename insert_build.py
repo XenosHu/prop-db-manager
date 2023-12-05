@@ -38,7 +38,7 @@ def app():
                 address = st.text_input("详细地址")
                 city = st.text_input("城市")
                 state = st.text_input("州")
-                postcode = st.text_input("邮编")
+                zipcode = st.text_input("邮编")
                 building_description = st.text_area("大楼介绍")
     
             with col2:
@@ -67,9 +67,9 @@ def app():
                         ) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
                     """
                     cursor.execute(building_insert_query, (
-                        building_name, website, location, address, building_description,
-                        building_image, building_location_image, postcode, pet,
-                        application_material, amenity_image, washer_dryer_image
+                        Building_name, website, location, address, city, state, zipcode, building_description, 
+                        building_image, building_location_image, pet, 
+                        application_material, amenity_image, washer_dryer_image, guarantee_policy 
                     ))
     
                     connection.commit()
