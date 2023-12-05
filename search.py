@@ -91,7 +91,7 @@ def app():
                                 Building.guarantee_policy,
                                 Building.source,
                                 Building.building_image,
-                                Building.website FROM sub_unit"""
+                                Building.website FROM sub_unit """
             join_conditions += "JOIN Unit ON sub_unit.unit_ID = Unit.unit_id JOIN Building ON Unit.building_id = Building.building_id "
             roomtype_conditions = ["sub_unit.room_type = '{}'".format(rt) for rt in roomtype_subunit]
             search_conditions.append("({})".format(" OR ".join(roomtype_conditions)))
