@@ -20,7 +20,7 @@ def app():
             query = """
             SELECT Unit.*, Building.Building_name, Building.location
             FROM Unit
-            JOIN Building ON Unit.building_id = Building.Building_ID
+            JOIN Building ON Unit.building_id = Building.building_ID
             """
         df = pd.read_sql(query, connection)
         connection.close()
@@ -76,7 +76,7 @@ def app():
         if include_subunit:
             # Query to include Sub_Unit, Unit, and Building
             search_query += "Sub_Unit.*, Unit.*, Building.* FROM Sub_Unit "
-            join_conditions += "JOIN Unit ON Sub_Unit.unit_ID = Unit.Unit_ID JOIN Building ON Unit.building_id = Building.Building_ID "
+            join_conditions += "JOIN Unit ON Sub_Unit.unit_ID = Unit.Unit_ID JOIN Building ON Unit.building_id = Building.building_ID "
             roomtype_conditions = ["Sub_Unit.room_type = '{}'".format(rt) for rt in roomtype_subunit]
             search_conditions.append("({})".format(" OR ".join(roomtype_conditions)))
             if available_start_date:
@@ -171,24 +171,22 @@ def app():
            #st.write(is_building_only,is_unit_included,is_subunit_included)
 
             building_columns = [
-                "Building_name", "website", "location", "address",
-                "building_description", "building_image", "building_location_image",
-                "postcode", "pet", "application_material", "amenity_image", "washer_dryer_image"
+            "building_name", "location", "address", "city", "state", "zipcode",
+            "building_description", "building_location_image", "pet", 
+            "application_material", "washer_dryer_image", "amenity_image",
+            "guarantee_policy", "source", "building_image", "website"
             ]
-
             unit_columns = [
-                "unit_number", "rent_price", "unit_type",
-                "floor_plan_image", "unit_image", "unit_video", "unit_description",
+                "unit_number", "rent_price", "floorplan", "floorplan_image",
+                "size", "concession", "direction", "unit_video", "unit_description",
                 "broker_fee", "available_date", "washer_dryer", "interest_pp_num"
+            ]
+            sub_unit_columns = [
+                "room_type", "sub_rent_price", "use_livingroom", "interest_pp_id"
             ]
 
             user_columns = [
                 "user_id", "preference", "roommate_preference", "sex"
-            ]
-
-            sub_unit_columns = [
-                 "room_type", "sub_rent_price",
-                "use_livingroom", "interest_pp_id"
             ]
             
             if 'updated_df' in st.session_state:
