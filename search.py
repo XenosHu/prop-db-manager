@@ -100,11 +100,27 @@ def app():
             if available_end_date:
                 search_conditions.append(f"Unit.available_date <= '{available_end_date}'")
             st.session_state['include_subunit'] = True
-            st.write("房型:")
+            st.write("房间:")
             
         elif include_unit:
             # Query to include Unit and Building
-            search_query += "Unit.*, Building.* FROM Unit "
+            search_query += """Unit.*, 
+                                Building.building_name,
+                                Building.location,
+                                Building.address,
+                                Building.city,
+                                Building.state,
+                                Building.zipcode,
+                                Building.building_description,
+                                Building.building_location_image,
+                                Building.pet,
+                                Building.application_material,
+                                Building.washer_dryer_image,
+                                Building.amenity_image,
+                                Building.guarantee_policy,
+                                Building.source,
+                                Building.building_image,
+                                Building.website FROM Unit "
             join_conditions += "JOIN Building ON Unit.building_id = Building.building_id "
             if available_start_date:
                 search_conditions.append(f"Unit.available_date >= '{available_start_date}'")
