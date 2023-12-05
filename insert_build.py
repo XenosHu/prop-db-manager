@@ -47,7 +47,7 @@ def app():
                 building_location_image = st.text_input("大楼位置图片url")
                 amenity_image = st.text_input("设施图片url")
                 washer_dryer_image = st.text_input("洗烘设备url")
-                pet = st.selectbox("宠物友好", ["Any", "Yes", "No"])
+                pet = st.selectbox("宠物友好", ["Yes", "No"])
                 application_material = st.text_area("申请材料")
                 guarantee_policy = st.text_area("担保政策")
     
@@ -61,13 +61,13 @@ def app():
 
                     building_insert_query = """
                         INSERT INTO Building (
-                            Building_name, website, location, address, city, state, zipcode, building_description, 
+                            building_name, website, location, address, city, state, zipcode, building_description, 
                             building_image, building_location_image, pet, 
                             application_material, amenity_image, washer_dryer_image, guarantee_policy 
                         ) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
                     """
                     cursor.execute(building_insert_query, (
-                        Building_name, website, location, address, city, state, zipcode, building_description, 
+                        building_name, website, location, address, city, state, zipcode, building_description, 
                         building_image, building_location_image, pet, 
                         application_material, amenity_image, washer_dryer_image, guarantee_policy 
                     ))
