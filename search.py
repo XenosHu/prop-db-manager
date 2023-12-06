@@ -223,6 +223,25 @@ def app():
                 "user_id", "preference", "roommate_preference", "sex"
             ]
             
+            # Handle deletions
+            if 'selected_for_deletion' in st.session_state:
+
+                for row in st.session_state['selected_for_deletion']:
+                    if is_subunit_included:
+                        # DELETE FROM Sub_Unit WHERE sub_unit_id = value
+                        sub_unit_delete_query = f"DELETE FROM sub_unit WHERE sub_unit_id = {row['sub_unit_id']}"
+                        execute_write_query(sub_unit_delete_query)
+
+                    elif is_unit_included:
+                        # DELETE FROM Unit WHERE unit_id = value
+                        unit_delete_query = f"DELETE FROM Unit WHERE unit_id = {row['unit_id']}"
+                        execute_write_query(unit_delete_query)
+
+                    elif is_building_only:
+                        # DELETE FROM Building WHERE building_id = value
+                        building_delete_query = f"DELETE FROM Building WHERE building_id = {row['building_id']}"
+                        execute_write_query(building_delete_query)
+                        
             if 'updated_df' in st.session_state:
                 updated_df = st.session_state['updated_df']
 
@@ -230,7 +249,7 @@ def app():
                 for i in updated_df.index:
                     if is_subunit_included:
                         # Construct and execute UPDATE query for Sub_Unit
-                        sub_unit_update_query = "UPDATE Sub_Unit SET "
+                        sub_unit_update_query = "UPDATE sub_unit SET "
                         sub_unit_update_query += ", ".join([f"{col} = '{updated_df.at[i, col]}'" for col in updated_df.columns if col in sub_unit_columns])
                         sub_unit_update_query += f" WHERE sub_unit_id = {updated_df.at[i, 'sub_unit_id']}"
                         execute_write_query(sub_unit_update_query)
@@ -250,24 +269,7 @@ def app():
                         execute_write_query(building_update_query)
                 del st.session_state['updated_df']  # Clear the updated data from the session state
 
-            # Handle deletions
-            if 'selected_for_deletion' in st.session_state:
 
-                for row in st.session_state['selected_for_deletion']:
-                    if is_subunit_included:
-                        # DELETE FROM Sub_Unit WHERE sub_unit_id = value
-                        sub_unit_delete_query = f"DELETE FROM sub_unit WHERE sub_unit_id = {row['sub_unit_id']}"
-                        execute_write_query(sub_unit_delete_query)
-
-                    elif is_unit_included:
-                        # DELETE FROM Unit WHERE unit_id = value
-                        unit_delete_query = f"DELETE FROM Unit WHERE unit_id = {row['unit_id']}"
-                        execute_write_query(unit_delete_query)
-
-                    elif is_building_only:
-                        # DELETE FROM Building WHERE building_id = value
-                        building_delete_query = f"DELETE FROM Building WHERE building_id = {row['building_id']}"
-                        execute_write_query(building_delete_query)
                             
         
                 st.success("Database Updated Successfully")
