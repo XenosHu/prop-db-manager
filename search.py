@@ -66,7 +66,7 @@ def app():
         st.session_state['include_subunit'] = False
 
         include_building = building_name != ""
-        include_unit = min_price!= 0 or max_price != 0 or washer_dryer != "Any" or pet != "Any" or location != ["Any"]
+        include_unit = min_price!= 0 or max_price != 0 or washer_dryer != "Any" or location != ["Any"]
         include_subunit = roomtype_subunit != ["Any"]
         
         search_query = "SELECT "
