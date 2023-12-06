@@ -35,13 +35,26 @@ def app():
         cursor.execute(query)
         connection.commit()
         connection.close()
+
+    def get_building_name():
+        connection = get_db_connection()
+        cursor = connection.cursor()
+        building_name_options = []
+        # Check if the building exists
+        cursor.execute("SELECT Building_name FROM Building")
+        building_names = cursor.fetchall()
+        for building_name in building_names:
+            building_name_options.append(building_name[0])
+
+        connection.close()
+        return building_name_options
         
     with st.form("search_form"):
         col1, col2 = st.columns(2)
 
         with col1:
             # 第一列的字段
-            building_name = st.text_input("大楼名称")
+            building_name = st.selectbox("公寓名称", get_building_name())
             min_price = st.number_input("最低价格", min_value=0, step=1, format='%d')
             max_price = st.number_input("最高价格", min_value=0, step=1, format='%d')
             location_options = ["Any", "New Jersey", "Manhattan upper", "Manhattan mid", "Manhattan lower", "LIC", "Brooklyn"]
