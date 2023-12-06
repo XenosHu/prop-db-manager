@@ -238,21 +238,43 @@ def app():
                     is_subunit_included = st.session_state.get('include_subunit', False)
                     # st.write(is_building_only,is_building_only,is_subunit_included)
                     
-                    building_columns = [
-                    "building_name", "location", "address", "city", "state", "zipcode",
-                    "building_description", "building_location_image", "pet", 
-                    "application_material", "washer_dryer_image", "amenity_image",
-                    "guarantee_policy", "source", "building_image", "website"
-                    ]
-                    unit_columns = [
-                        "unit_number", "rent_price", "floorplan", "floorplan_image",
-                        "size", "concession", "direction", "unit_video", "unit_description",
-                        "broker_fee", "available_date", "washer_dryer", "interest_pp_num"
-                    ]
-                    sub_unit_columns = [
-                        "room_type", "sub_rent_price", "use_livingroom", "interest_pp_id"
-                    ]
-                    column_name_mapping = {
+                    building_column_name_mapping = {
+                        '公寓名称': 'building_name',
+                        '区域': 'location',
+                        '地址': 'address',
+                        '城市': 'city',
+                        '州': 'state',
+                        '邮政编码': 'zipcode',
+                        '公寓描述': 'building_description',
+                        '公寓位置图片': 'building_location_image',
+                        '宠物友好': 'pet',
+                        '申请材料': 'application_material',
+                        '公用洗烘设施图片': 'washer_dryer_image',
+                        '设施图片': 'amenity_image',
+                        '担保政策': 'guarantee_policy',
+                        '来源': 'source',
+                        '公寓图片': 'building_image',
+                        '公寓网站': 'website'
+                    }
+
+                    
+                    unit_column_name_mapping = {
+                        '单元号': 'unit_number',
+                        '租金': 'rent_price',
+                        '户型': 'floorplan',
+                        '户型图': 'floorplan_image',
+                        '面积sqft': 'size',
+                        '优惠政策': 'concession',
+                        '朝向': 'direction',
+                        '单元视频': 'unit_video',
+                        '单元描述': 'unit_description',
+                        '中介费': 'broker_fee',
+                        'Availability': 'available_date',
+                        '室内洗烘': 'washer_dryer',
+                        '在拼人数': 'interest_pp_num'
+                    }
+
+                    sub_unit_column_name_mapping = {
                         '房间': 'room_type',
                         '房间租金': 'sub_rent_price',
                         '客厅住人': 'use_livingroom',
@@ -264,22 +286,21 @@ def app():
                         if is_subunit_included:
                             # Construct and execute UPDATE query for Sub_Unit
                             sub_unit_update_query = "UPDATE sub_unit SET "
-                            sub_unit_update_query += ", ".join([f"{column_name_mapping[col]} = '{updated_df.at[i, col]}'" for col in updated_df.columns if col in column_name_mapping])
-                            #sub_unit_update_query += ", ".join([f"{col} = '{updated_df.at[i, col]}'" for col in updated_df.columns if col in sub_unit_columns])
+                            sub_unit_update_query += ", ".join([f"{column_name_mapping[col]} = '{updated_df.at[i, col]}'" for col in updated_df.columns if col in sub_unit_column_name_mapping])
                             sub_unit_update_query += f" WHERE sub_unit_id = {updated_df.at[i, 'sub_unit_id']}"
                             execute_write_query(sub_unit_update_query)
     
                         elif is_unit_included:
                             # Construct and execute UPDATE query for Unit
                             unit_update_query = "UPDATE Unit SET "
-                            unit_update_query += ", ".join([f"{col} = '{updated_df.at[i, col]}'" for col in updated_df.columns if col in unit_columns])
+                            unit_update_query += ", ".join([f"{unit_column_name_mapping[col]} = '{updated_df.at[i, col]}'" for col in updated_df.columns if col in unit_column_name_mapping])
                             unit_update_query += f" WHERE unit_id = {updated_df.at[i, 'unit_id']}"
                             execute_write_query(unit_update_query)
     
                         elif is_building_only:
                             # Construct and execute UPDATE query for Building
                             building_update_query = "UPDATE Building SET "
-                            building_update_query += ", ".join([f"{col} = '{updated_df.at[i, col]}'" for col in updated_df.columns if col in building_columns])
+                            building_update_query += ", ".join([f"{building_column_name_mapping[col]} = '{updated_df.at[i, col]}'" for col in updated_df.columns if col in building_column_name_mapping])
                             building_update_query += f" WHERE building_id = {updated_df.at[i, 'building_id']}"
                             execute_write_query(building_update_query)
                         
