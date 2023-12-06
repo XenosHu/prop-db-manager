@@ -123,9 +123,9 @@ def app():
                 search_conditions.append(f"Unit.available_date <= '{available_end_date}'")
 
             if on_market == 'Yes':
-                search_conditions.append("Unit.on_market == 1")
+                search_conditions.append("Unit.on_market = 1")
             if on_market == 'No':
-                search_conditions.append("Unit.on_market == 0")
+                search_conditions.append("Unit.on_market = 0")
                 
             st.session_state['include_subunit'] = True
             st.write("房间:")
@@ -145,7 +145,7 @@ def app():
                                 Unit.available_date AS Availability,
                                 Unit.washer_dryer AS 室内洗烘,
                                 Unit.interest_pp_num AS 在拼人数, 
-                                Unit.on_market AS On Market,
+                                Unit.on_market AS "On Market",
                                 Building.building_name AS 公寓名称,
                                 Building.location AS 区域,
                                 Building.address AS 地址,
@@ -170,9 +170,9 @@ def app():
                 search_conditions.append(f"Unit.available_date <= '{available_end_date}'")
 
             if on_market == 'Yes':
-                search_conditions.append("Unit.on_market == 1")
+                search_conditions.append("Unit.on_market = 1")
             if on_market == 'No':
-                search_conditions.append("Unit.on_market == 0")
+                search_conditions.append("Unit.on_market = 0")
                 
             st.write("单元:")
             st.session_state['include_unit'] = True
