@@ -51,7 +51,7 @@ def app():
             pet = st.selectbox("宠物", ["No","Yes"])
             roomtype_options = ["Any", 'Studio', '1b1b', '2b2b', '2b1b', '3b2b', '4b3b', '3b3b']
             roomtype = st.multiselect("户型", options=roomtype_options, default=["Any"])
-            roomtype_subunit = st.multiselect("房型", options=["Any", "All",'bedroom1', 'bedroom2', 'bedroom3', 'living room'], default=["Any"])
+            roomtype_subunit = st.multiselect("房型", options=["Any", "All",'bedroom1', 'bedroom2', 'bedroom3', 'living_room'], default=["Any"])
             available_start_date = st.date_input("入住时间")
             available_end_date = st.date_input("至")
 
@@ -109,8 +109,8 @@ def app():
                                 Building.website AS 公寓网站,
                                 sub_unit.sub_unit_id FROM sub_unit """
             join_conditions += "JOIN Unit ON sub_unit.Unit_ID = Unit.unit_id JOIN Building ON Unit.building_id = Building.building_id "
-            if roomtype_subunit == ['All']:
-                roomtype_subunit = ['bedroom1', 'bedroom2', 'bedroom3', 'living room']
+            if 'All' in roomtype_subunit:
+                roomtype_subunit = ['bedroom1', 'bedroom2', 'bedroom3', 'living_room']
             roomtype_conditions = ["sub_unit.room_type = '{}'".format(rt) for rt in roomtype_subunit]
             search_conditions.append("({})".format(" OR ".join(roomtype_conditions)))
             if available_start_date:
