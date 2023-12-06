@@ -14,6 +14,7 @@ def app():
 
     # Function to execute read query
     def execute_read_query(query=None):
+        st.write(query)
         connection = get_db_connection()
         if query is None:
             # Adjust this default query as per your requirements
@@ -46,6 +47,7 @@ def app():
             location_options = ["Any", "New Jersey", "Manhattan upper", "Manhattan mid", "Manhattan lower", "LIC", "Brooklyn"]
             location = st.multiselect("位置", options=location_options, default=["Any"])
             washer_dryer = st.selectbox("室内洗烘", ["Any", "Yes"])
+            on_market = st.selectbox("On Market", ["Yes",'No'])
         
         with col2:
             # 第二列的字段
