@@ -234,7 +234,7 @@ def app():
             if not updated_df.equals(df):
                 if st.button('更新'):
                     is_building_only = st.session_state.get('include_building_only', False)
-                    is_building_only = st.session_state.get('include_unit', False)
+                    is_unit_included = st.session_state.get('include_unit', False)
                     is_subunit_included = st.session_state.get('include_subunit', False)
                     # st.write(is_building_only,is_building_only,is_subunit_included)
                     
@@ -269,14 +269,14 @@ def app():
                             sub_unit_update_query += f" WHERE sub_unit_id = {updated_df.at[i, 'sub_unit_id']}"
                             execute_write_query(sub_unit_update_query)
     
-                        if is_unit_included and not is_subunit_included:
+                        elif is_unit_included:
                             # Construct and execute UPDATE query for Unit
                             unit_update_query = "UPDATE Unit SET "
                             unit_update_query += ", ".join([f"{col} = '{updated_df.at[i, col]}'" for col in updated_df.columns if col in unit_columns])
                             unit_update_query += f" WHERE unit_id = {updated_df.at[i, 'unit_id']}"
                             execute_write_query(unit_update_query)
     
-                        if is_building_only:
+                        elif is_building_only:
                             # Construct and execute UPDATE query for Building
                             building_update_query = "UPDATE Building SET "
                             building_update_query += ", ".join([f"{col} = '{updated_df.at[i, col]}'" for col in updated_df.columns if col in building_columns])
