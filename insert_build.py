@@ -47,7 +47,7 @@ def app():
                 building_location_image = st.text_input("大楼位置图片url")
                 amenity_image = st.text_input("设施图片url")
                 washer_dryer_image = st.text_input("洗烘设备url")
-                pet = st.selectbox("宠物友好", ["Yes", "No"])
+                pet = st.checkbox("宠物友好", value=False)
                 application_material = st.text_area("申请材料")
                 guarantee_policy = st.text_area("担保政策")
     
