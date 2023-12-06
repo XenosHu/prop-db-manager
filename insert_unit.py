@@ -41,7 +41,7 @@ def app():
                 available_date = st.date_input("起租日期")
                 size = st.number_input("单元面积", min_value=0)
                 washer_dryer = st.checkbox("室内洗烘", value=False)
-                unit_description = st.text_area("单元描述")
+                
     
             with col2:
                 # Column 2 fields
@@ -53,6 +53,8 @@ def app():
                 broker_fee = st.number_input("中介费", min_value=0)
                 interest_pp_num = st.number_input("在拼人数", min_value=0)
                 on_market = st.checkbox("On Market", value=False)
+                
+            unit_description = st.text_area("单元描述")
     
             unit_form_submitted = st.form_submit_button("添加单元")
             
