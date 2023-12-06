@@ -282,8 +282,8 @@ def app():
                             building_update_query += ", ".join([f"{col} = '{updated_df.at[i, col]}'" for col in updated_df.columns if col in building_columns])
                             building_update_query += f" WHERE building_id = {updated_df.at[i, 'building_id']}"
                             execute_write_query(building_update_query)
-                        del st.session_state['updated_df']  # Clear the updated data from the session state
-                        st.success("Database Updated Successfully")
+                        
+                        st.success("更新成功！")
 
         
         # Store selected rows for deletion
