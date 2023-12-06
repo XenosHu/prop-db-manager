@@ -286,7 +286,7 @@ def app():
                         if is_subunit_included:
                             # Construct and execute UPDATE query for Sub_Unit
                             sub_unit_update_query = "UPDATE sub_unit SET "
-                            sub_unit_update_query += ", ".join([f"{column_name_mapping[col]} = '{updated_df.at[i, col]}'" for col in updated_df.columns if col in sub_unit_column_name_mapping])
+                            sub_unit_update_query += ", ".join([f"{sub_unit_column_name_mapping[col]} = '{updated_df.at[i, col]}'" for col in updated_df.columns if col in sub_unit_column_name_mapping])
                             sub_unit_update_query += f" WHERE sub_unit_id = {updated_df.at[i, 'sub_unit_id']}"
                             execute_write_query(sub_unit_update_query)
     
