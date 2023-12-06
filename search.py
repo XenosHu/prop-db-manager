@@ -212,7 +212,7 @@ def app():
             search_conditions.append(f"Building.pet = {pet_val}")
             
         if "Any" not in roomtype:
-            roomtype_conditions = ["Unit.unit_type LIKE '%{}%'".format(loc) for loc in roomtype]
+            roomtype_conditions = ["Unit.floorplan LIKE '%{}%'".format(loc) for loc in roomtype]
             search_conditions.append("({})".format(" OR ".join(roomtype_conditions)))
 
 
