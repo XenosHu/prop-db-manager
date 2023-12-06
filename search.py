@@ -69,13 +69,28 @@ def app():
         include_unit = min_price!= 0 or max_price != 0 or washer_dryer != "Any" or location != ["Any"]
         include_subunit = roomtype_subunit != ["Any"]
         
-        search_query = "SELECT "
+        search_query = "SELECT"
         search_conditions = []
         join_conditions = ""
 
         if include_subunit:
             # Query to include Sub_Unit, Unit, and Building
-            search_query += """sub_unit.*, Unit.*, 
+            search_query += """ sub_unit.room_type AS 房间,
+                                sub_unit.sub_rent_price AS 房间租金,
+                                sub_unit.use_livingroom AS 客厅住人,
+                                Unit.unit_number AS 单元号,
+                                Unit.rent_price AS 租金,
+                                Unit.floorplan AS 户型,
+                                Unit.floorplan_image AS 户型图,
+                                Unit.size AS 面积sqft,
+                                Unit.concession AS 优惠政策,
+                                Unit.direction AS 朝向,
+                                Unit.unit_video AS 单元视频,
+                                Unit.unit_description AS 单元描述,
+                                Unit.broker_fee AS 中介费,
+                                Unit.available_date AS Availability,
+                                Unit.washer_dryer AS 室内洗烘,
+                                Unit.interest_pp_num AS 在拼人数,
                                 Building.building_name AS 公寓名称,
                                 Building.location AS 区域,
                                 Building.address AS 地址,
@@ -91,7 +106,8 @@ def app():
                                 Building.guarantee_policy AS 担保政策,
                                 Building.source AS 来源,
                                 Building.building_image AS 公寓图片,
-                                Building.website AS 公寓网站 FROM sub_unit """
+                                Building.website AS 公寓网站,
+                                sub_unit.sub_unit_id FROM sub_unit """
             join_conditions += "JOIN Unit ON sub_unit.Unit_ID = Unit.unit_id JOIN Building ON Unit.building_id = Building.building_id "
             if roomtype_subunit == ['All']:
                 roomtype_subunit = ['bedroom1', 'bedroom2', 'bedroom3', 'living room']
@@ -106,7 +122,19 @@ def app():
             
         elif include_unit:
             # Query to include Unit and Building
-            search_query += """Unit.*, 
+            search_query += """ Unit.unit_number AS 单元号,
+                                Unit.rent_price AS 租金,
+                                Unit.floorplan AS 户型,
+                                Unit.floorplan_image AS 户型图,
+                                Unit.size AS 面积sqft,
+                                Unit.concession AS 优惠政策,
+                                Unit.direction AS 朝向,
+                                Unit.unit_video AS 单元视频,
+                                Unit.unit_description AS 单元描述,
+                                Unit.broker_fee AS 中介费,
+                                Unit.available_date AS Availability,
+                                Unit.washer_dryer AS 室内洗烘,
+                                Unit.interest_pp_num AS 在拼人数, 
                                 Building.building_name AS 公寓名称,
                                 Building.location AS 区域,
                                 Building.address AS 地址,
@@ -122,7 +150,8 @@ def app():
                                 Building.guarantee_policy AS 担保政策,
                                 Building.source AS 来源,
                                 Building.building_image AS 公寓图片,
-                                Building.website AS 公寓网站 FROM Unit """
+                                Building.website AS 公寓网站,
+                                Unit.unit_id FROM Unit """
             join_conditions += "JOIN Building ON Unit.building_id = Building.building_id "
             if available_start_date:
                 search_conditions.append(f"Unit.available_date >= '{available_start_date}'")
@@ -147,7 +176,8 @@ def app():
                                 Building.guarantee_policy AS 担保政策,
                                 Building.source AS 来源,
                                 Building.building_image AS 公寓图片,
-                                Building.website AS 公寓网站 FROM Building """
+                                Building.website AS 公寓网站,
+                                Building.building_id FROM Building """
             st.write("公寓:")
             st.session_state['include_building_only'] = True
             
