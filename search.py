@@ -161,8 +161,8 @@ def app():
         if washer_dryer != "Any":
             washer_dryer_val = 1 if washer_dryer == "Yes" else 0
             search_conditions.append(f"Unit.washer_dryer = {washer_dryer_val}")
-        if pet != "Any":
-            pet_val = 1 if pet == "Yes" else 0
+        if pet != "No":
+            pet_val = 1
             search_conditions.append(f"Building.pet = {pet_val}")
             
         if "Any" not in roomtype:
