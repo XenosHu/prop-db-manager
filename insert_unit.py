@@ -52,29 +52,12 @@ def app():
                 concession = st.text_input("优惠")
                 broker_fee = st.number_input("中介费", min_value=0)
                 interest_pp_num = st.number_input("感兴趣人数", min_value=0)
+                on_market = st.selectbox('on market',['Yes','No'])
     
             unit_form_submitted = st.form_submit_button("添加单元")
             
         if unit_form_submitted:         
-            # # Save Unit data to session state
-            # st.session_state['unit_data'] = {
-            #     'building_name': building_name,
-            #     'unit_number': unit_number,
-            #     'rent_price': rent_price,
-            #     'floorplan': floorplan,
-            #     'floorplan_image': floorplan_image,
-            #     'unit_image': unit_image,
-            #     'unit_video': unit_video,
-            #     'unit_description': description,
-            #     'broker_fee': broker_fee,
-            #     'sqft': sqft,
-            #     'concession': concession,
-            #     'direction': direction,
-            #     'available_date': available_date,
-            #     'washer_dryer': washer_dryer,
-            #     'interest_pp_num': interest_pp_num
-            # }
-            
+
             # Assuming you have a function to handle the database connection
             connection = get_db_connection()   
             cursor = connection.cursor()
@@ -92,13 +75,13 @@ def app():
                     INSERT INTO Unit (
                         building_id, unit_number, rent_price, floorplan, floorplan_image, 
                         size, concession, direction,unit_video, unit_description, broker_fee,  
-                        available_date, washer_dryer, interest_pp_num
-                    ) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
+                        available_date, washer_dryer, interest_pp_num,on_market
+                    ) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
                 """
                 cursor.execute(unit_insert_query, (
                     building_id, unit_number, rent_price, floorplan, floorplan_image, 
                     size, concession, direction,unit_video, unit_description, broker_fee,  
-                    available_date, washer_dryer, interest_pp_num
+                    available_date, washer_dryer, interest_pp_num, on_market
                 ))
     
                 # Commit transaction and close connection
