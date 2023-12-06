@@ -94,7 +94,7 @@ def app():
                                 Unit.available_date AS Availability,
                                 Unit.washer_dryer AS 室内洗烘,
                                 Unit.interest_pp_num AS 在拼人数,
-                                Unit.on_market AS On Market,
+                                Unit.on_market AS "On Market",
                                 Building.building_name AS 公寓名称,
                                 Building.location AS 区域,
                                 Building.address AS 地址,
