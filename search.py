@@ -77,21 +77,21 @@ def app():
             # Query to include Sub_Unit, Unit, and Building
             search_query += """sub_unit.*, Unit.*, 
                                 Building.building_name AS 公寓名称,
-                                Building.location AS 位置,
+                                Building.location AS 区域,
                                 Building.address AS 地址,
-                                Building.city AS 城市,
-                                Building.state AS 州,
-                                Building.zipcode AS 邮政编码,
-                                Building.building_description AS 建筑描述,
-                                Building.building_location_image AS 建筑位置图片,
+                                Building.city,
+                                Building.state,
+                                Building.zipcode,
+                                Building.building_description AS 公寓描述,
+                                Building.building_location_image AS 公寓位置图片,
                                 Building.pet AS 宠物友好,
                                 Building.application_material AS 申请材料,
-                                Building.washer_dryer_image AS 洗衣机干衣机图片,
-                                Building.amenity_image AS 便利设施图片,
+                                Building.washer_dryer_image AS 公用洗烘设施图片,
+                                Building.amenity_image AS 设施图片,
                                 Building.guarantee_policy AS 担保政策,
                                 Building.source AS 来源,
-                                Building.building_image AS 建筑图片,
-                                Building.website AS 网站 FROM sub_unit """
+                                Building.building_image AS 公寓图片,
+                                Building.website AS 公寓网站 FROM sub_unit """
             join_conditions += "JOIN Unit ON sub_unit.Unit_ID = Unit.unit_id JOIN Building ON Unit.building_id = Building.building_id "
             if roomtype_subunit == ['All']:
                 roomtype_subunit = ['bedroom1', 'bedroom2', 'bedroom3', 'living room']
@@ -107,22 +107,22 @@ def app():
         elif include_unit:
             # Query to include Unit and Building
             search_query += """Unit.*, 
-                                Building.building_name,
-                                Building.location,
-                                Building.address,
+                                Building.building_name AS 公寓名称,
+                                Building.location AS 区域,
+                                Building.address AS 地址,
                                 Building.city,
                                 Building.state,
                                 Building.zipcode,
-                                Building.building_description,
-                                Building.building_location_image,
-                                Building.pet,
-                                Building.application_material,
-                                Building.washer_dryer_image,
-                                Building.amenity_image,
-                                Building.guarantee_policy,
-                                Building.source,
-                                Building.building_image,
-                                Building.website FROM Unit """
+                                Building.building_description AS 公寓描述,
+                                Building.building_location_image AS 公寓位置图片,
+                                Building.pet AS 宠物友好,
+                                Building.application_material AS 申请材料,
+                                Building.washer_dryer_image AS 公用洗烘设施图片,
+                                Building.amenity_image AS 设施图片,
+                                Building.guarantee_policy AS 担保政策,
+                                Building.source AS 来源,
+                                Building.building_image AS 公寓图片,
+                                Building.website AS 公寓网站 FROM Unit """
             join_conditions += "JOIN Building ON Unit.building_id = Building.building_id "
             if available_start_date:
                 search_conditions.append(f"Unit.available_date >= '{available_start_date}'")
@@ -132,11 +132,25 @@ def app():
             st.session_state['include_unit'] = True
         else:
             # Query to include only Building
-            search_query += "* FROM Building "
+            search_query += """ Building.building_name AS 公寓名称,
+                                Building.location AS 区域,
+                                Building.address AS 地址,
+                                Building.city,
+                                Building.state,
+                                Building.zipcode,
+                                Building.building_description AS 公寓描述,
+                                Building.building_location_image AS 公寓位置图片,
+                                Building.pet AS 宠物友好,
+                                Building.application_material AS 申请材料,
+                                Building.washer_dryer_image AS 公用洗烘设施图片,
+                                Building.amenity_image AS 设施图片,
+                                Building.guarantee_policy AS 担保政策,
+                                Building.source AS 来源,
+                                Building.building_image AS 公寓图片,
+                                Building.website AS 公寓网站 FROM Building """
             st.write("公寓:")
             st.session_state['include_building_only'] = True
             
-    
         if building_name:
             search_conditions.append(f"Building.Building_name LIKE '%{building_name}%'")
         if min_price and max_price:
