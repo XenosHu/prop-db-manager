@@ -40,19 +40,19 @@ def app():
                 floorplan = st.selectbox("户型", ['Studio', '1b1b', '2b2b', '2b1b', '3b2b', '3b3b', '4b3b', 'other'])
                 available_date = st.date_input("起租日期")
                 size = st.number_input("单元面积", min_value=0)
-                washer_dryer = st.selectbox("室内洗烘", ["Yes", "No"])
+                washer_dryer = st.checkbox("室内洗烘", value=False)
                 unit_description = st.text_area("单元描述")
     
             with col2:
                 # Column 2 fields
                 # unit_image = st.text_input("单元图片URL")
                 unit_video = st.text_input("单元视频URL")
-                floorplan_image = st.text_input("户型图像URL")
+                floorplan_image = st.text_input("户型图URL")
                 direction = st.selectbox("房间朝向", ["N", "S", "E", "W", "NE", "NW", "SE", "SW"])
-                concession = st.text_input("优惠")
+                concession = st.text_input("优惠政策")
                 broker_fee = st.number_input("中介费", min_value=0)
-                interest_pp_num = st.number_input("感兴趣人数", min_value=0)
-                on_market = st.selectbox('on market',['Yes','No'])
+                interest_pp_num = st.number_input("在拼人数", min_value=0)
+                on_market = st.checkbox("On Market", value=False)
     
             unit_form_submitted = st.form_submit_button("添加单元")
             
