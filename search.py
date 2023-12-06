@@ -239,7 +239,24 @@ def app():
         if selected:
             st.session_state['selected_for_deletion'] = selected
             #st.write("Selected rows:", selected)
+            
+            if st.button('删除'):
+                for row in st.session_state['selected_for_deletion']:
+                    if is_subunit_included:
+                        # DELETE FROM Sub_Unit WHERE sub_unit_id = value
+                        sub_unit_delete_query = f"DELETE FROM sub_unit WHERE sub_unit_id = {row['sub_unit_id']}"
+                        execute_write_query(sub_unit_delete_query)
 
+                    elif is_unit_included:
+                        # DELETE FROM Unit WHERE unit_id = value
+                        unit_delete_query = f"DELETE FROM Unit WHERE unit_id = {row['unit_id']}"
+                        execute_write_query(unit_delete_query)
+
+                    elif is_building_only:
+                        # DELETE FROM Building WHERE building_id = value
+                        building_delete_query = f"DELETE FROM Building WHERE building_id = {row['building_id']}"
+                        execute_write_query(building_delete_query)
+                
         # Confirm Update Button
         if st.button('更新/删除'):
 
@@ -268,26 +285,8 @@ def app():
                 "user_id", "preference", "roommate_preference", "sex"
             ]
             
-            # Handle deletions
-            if 'selected_for_deletion' in st.session_state:
-
-                for row in st.session_state['selected_for_deletion']:
-                    if is_subunit_included:
-                        # DELETE FROM Sub_Unit WHERE sub_unit_id = value
-                        sub_unit_delete_query = f"DELETE FROM sub_unit WHERE sub_unit_id = {row['sub_unit_id']}"
-                        execute_write_query(sub_unit_delete_query)
-
-                    elif is_unit_included:
-                        # DELETE FROM Unit WHERE unit_id = value
-                        unit_delete_query = f"DELETE FROM Unit WHERE unit_id = {row['unit_id']}"
-                        execute_write_query(unit_delete_query)
-
-                    elif is_building_only:
-                        # DELETE FROM Building WHERE building_id = value
-                        building_delete_query = f"DELETE FROM Building WHERE building_id = {row['building_id']}"
-                        execute_write_query(building_delete_query)
-                        
-            elif 'updated_df' in st.session_state:
+         
+            if 'updated_df' in st.session_state:
                 updated_df = st.session_state['updated_df']
 
                 # Handle updates for Building, Unit, and Sub_Unit
