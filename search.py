@@ -46,17 +46,17 @@ def app():
             max_price = st.number_input("最高价格", min_value=0, step=1, format='%d')
             location_options = ["Any", "New Jersey", "Manhattan upper", "Manhattan mid", "Manhattan lower", "LIC", "Brooklyn"]
             location = st.multiselect("位置", options=location_options, default=["Any"])
-            washer_dryer = st.selectbox("室内洗烘", ["Any", "Yes"])
-            on_market = st.selectbox("On Market", ["Yes",'No'])
+            washer_dryer = st.checkbox("室内洗烘", value=False)
+            on_market = st.checkbox("On Market", value=False)
         
         with col2:
             # 第二列的字段
-            pet = st.selectbox("宠物", ["No","Yes"])
             roomtype_options = ["Any", 'Studio', '1b1b', '2b2b', '2b1b', '3b2b', '4b3b', '3b3b']
             roomtype = st.multiselect("户型", options=roomtype_options, default=["Any"])
             roomtype_subunit = st.multiselect("房型", options=["Any", "All",'bedroom1', 'bedroom2', 'bedroom3', 'living_room'], default=["Any"])
             available_start_date = st.date_input("入住时间")
             available_end_date = st.date_input("至")
+            pet = st.checkbox("宠物友好", value=False)
 
         search_button = st.form_submit_button("搜索")
 
@@ -69,7 +69,7 @@ def app():
         st.session_state['include_subunit'] = False
 
         include_building = building_name != ""
-        include_unit = min_price!= 0 or max_price != 0 or washer_dryer != "Any" or location != ["Any"]
+        include_unit = min_price!= 0 or max_price != 0 or washer_dryer == True or location != ["Any"]
         include_subunit = roomtype_subunit != ["Any"]
         
         search_query = "SELECT"
@@ -122,9 +122,9 @@ def app():
             if available_end_date:
                 search_conditions.append(f"Unit.available_date <= '{available_end_date}'")
 
-            if on_market == 'Yes':
+            if on_market:
                 search_conditions.append("Unit.on_market = 1")
-            if on_market == 'No':
+            if not on_market:
                 search_conditions.append("Unit.on_market = 0")
                 
             st.session_state['include_subunit'] = True
@@ -169,9 +169,9 @@ def app():
             if available_end_date:
                 search_conditions.append(f"Unit.available_date <= '{available_end_date}'")
 
-            if on_market == 'Yes':
+            if on_market:
                 search_conditions.append("Unit.on_market = 1")
-            if on_market == 'No':
+            if not on_market:
                 search_conditions.append("Unit.on_market = 0")
                 
             st.write("单元:")
@@ -205,10 +205,9 @@ def app():
         if "Any" not in location:
             location_conditions = ["Building.location LIKE '%{}%'".format(loc) for loc in location]
             search_conditions.append("({})".format(" OR ".join(location_conditions)))
-        if washer_dryer != "Any":
-            washer_dryer_val = 1 if washer_dryer == "Yes" else 0
-            search_conditions.append(f"Unit.washer_dryer = {washer_dryer_val}")
-        if pet != "No":
+        if washer_dryer:
+            search_conditions.append("Unit.washer_dryer = 1")
+        if pet:
             pet_val = 1
             search_conditions.append(f"Building.pet = {pet_val}")
             
