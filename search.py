@@ -14,7 +14,7 @@ def app():
 
     # Function to execute read query
     def execute_read_query(query=None):
-        st.write(query)
+        # st.write(query)
         connection = get_db_connection()
         if query is None:
             # Adjust this default query as per your requirements
@@ -29,7 +29,7 @@ def app():
 
     # Function to execute write query (update, delete)
     def execute_write_query(query):
-        st.write(query)
+        # st.write(query)
         connection = get_db_connection()
         cursor = connection.cursor()
         cursor.execute(query)
