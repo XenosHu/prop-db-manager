@@ -28,6 +28,7 @@ def app():
 
     # Function to execute write query (update, delete)
     def execute_write_query(query):
+        print(query)
         connection = get_db_connection()
         cursor = connection.cursor()
         cursor.execute(query)
@@ -286,7 +287,7 @@ def app():
                         building_delete_query = f"DELETE FROM Building WHERE building_id = {row['building_id']}"
                         execute_write_query(building_delete_query)
                         
-            if 'updated_df' in st.session_state:
+            elif 'updated_df' in st.session_state:
                 updated_df = st.session_state['updated_df']
 
                 # Handle updates for Building, Unit, and Sub_Unit
