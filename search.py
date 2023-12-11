@@ -14,7 +14,7 @@ def app():
 
     # Function to execute read query
     def execute_read_query(query=None):
-        st.write(query)
+        # st.write(query)
         connection = get_db_connection()
         if query is None:
             # Adjust this default query as per your requirements
@@ -211,8 +211,7 @@ def app():
             st.write("公寓:")
             st.session_state['include_building_only'] = True
             
-        if building_name != ['All']:
-            st.write(building_name)
+        if building_name != 'All':
             search_conditions.append(f"Building.Building_name LIKE '%{building_name}%'")
         if min_price and max_price:
             search_conditions.append(f"Unit.rent_price BETWEEN {min_price} AND {max_price}")
