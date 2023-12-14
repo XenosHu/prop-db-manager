@@ -333,7 +333,7 @@ def app():
                             building_update_query += f" WHERE building_id = {updated_df.at[i, 'building_id']}"
                             execute_write_query(building_update_query)
                         
-                        st.success("更新成功！")
+                    st.success("更新成功！")
 
         
         # Store selected rows for deletion
