@@ -82,7 +82,7 @@ def app():
         st.session_state['include_subunit'] = False
 
         include_building = building_name != "All"
-        include_unit = min_price!= 0 or max_price != 0 or washer_dryer == True or location != ["Any"]
+        include_unit = min_price!= 0 or max_price != 0 or washer_dryer == True
         include_subunit = roomtype_subunit != ["Any"]
         
         search_query = "SELECT"
@@ -215,7 +215,7 @@ def app():
             search_conditions.append(f"Building.Building_name LIKE '%{building_name}%'")
         if min_price and max_price:
             search_conditions.append(f"Unit.rent_price BETWEEN {min_price} AND {max_price}")
-        if "Any" not in location:
+        if location != ['Any']:
             location_conditions = ["Building.location LIKE '%{}%'".format(loc) for loc in location]
             search_conditions.append("({})".format(" OR ".join(location_conditions)))
         if washer_dryer:
