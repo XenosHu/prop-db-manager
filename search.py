@@ -130,15 +130,14 @@ def app():
                 roomtype_subunit = ['bedroom1', 'bedroom2', 'bedroom3', 'living_room']
             roomtype_conditions = ["sub_unit.room_type = '{}'".format(rt) for rt in roomtype_subunit]
             search_conditions.append("({})".format(" OR ".join(roomtype_conditions)))
-            if available_start_date:
+            if available_start_date == available_end_date:
+                pass
+            else:
                 search_conditions.append(f"Unit.available_date >= '{available_start_date}'")
-            if available_end_date:
                 search_conditions.append(f"Unit.available_date <= '{available_end_date}'")
-
+        
             if on_market:
                 search_conditions.append("Unit.on_market = 1")
-            if not on_market:
-                search_conditions.append("Unit.on_market = 0")
                 
             st.session_state['include_subunit'] = True
             st.write("房间:")
@@ -185,8 +184,6 @@ def app():
         
             if on_market:
                 search_conditions.append("Unit.on_market = 1")
-            if not on_market:
-                search_conditions.append("Unit.on_market = 0")
                 
             st.write("单元:")
             st.session_state['include_unit'] = True
