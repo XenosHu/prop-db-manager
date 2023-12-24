@@ -324,7 +324,7 @@ def app():
                             unit_update_query += f" WHERE unit_id = {updated_df.at[i, 'unit_id']}"
                             execute_write_query(unit_update_query)
     
-                        elif is_building_only:
+                        else:
                             # Construct and execute UPDATE query for Building
                             building_update_query = "UPDATE Building SET "
                             building_update_query += ", ".join([f"{building_column_name_mapping[col]} = '{updated_df.at[i, col]}'" for col in updated_df.columns if col in building_column_name_mapping])
@@ -355,7 +355,7 @@ def app():
                         unit_delete_query = f"DELETE FROM Unit WHERE unit_id = {row['unit_id']}"
                         execute_write_query(unit_delete_query)
 
-                    elif is_building_only:
+                    else:
                         # DELETE FROM Building WHERE building_id = value
                         building_delete_query = f"DELETE FROM Building WHERE building_id = {row['building_id']}"
                         execute_write_query(building_delete_query)
