@@ -104,8 +104,7 @@ def app():
                                 Unit.unit_description AS 单元描述,
                                 Unit.broker_fee AS 中介费,
                                 Unit.available_date AS Availability,
-                                Unit.washer_dryer AS 室内洗烘,
-                                Unit.interest_pp_num AS 在拼人数,
+                                Unit.washer_dryer AS 室内洗烘,                                
                                 Unit.on_market AS "On Market",
                                 Building.building_name AS 公寓名称,
                                 Building.location AS 区域,
@@ -153,7 +152,6 @@ def app():
                                 Unit.available_date AS Availability,
                                 Unit.movein_before,
                                 Unit.washer_dryer AS 室内洗烘,
-                                Unit.interest_pp_num AS 在拼人数, 
                                 Unit.on_market AS "On Market",
                                 Building.location AS 区域,
                                 Building.building_description AS 公寓描述,
@@ -284,7 +282,6 @@ def app():
                         '中介费': 'broker_fee',
                         'Availability': 'available_date',
                         '室内洗烘': 'washer_dryer',
-                        '在拼人数': 'interest_pp_num',
                         'On Market':'on_market'
                     }
 
