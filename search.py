@@ -59,17 +59,16 @@ def app():
             max_price = st.number_input("最高价格", min_value=0, step=1, format='%d')
             location_options = ["Any", "New Jersey", "Manhattan upper", "Manhattan mid", "Manhattan lower", "LIC", "Brooklyn"]
             location = st.multiselect("位置", options=location_options, default=["Any"])
-            washer_dryer = st.checkbox("室内洗烘", value=False)
-            on_market = st.checkbox("On Market", value=False)
-        
+
         with col2:
             # 第二列的字段
             roomtype_options = ["Any", 'Studio', '1b1b', '2b2b', '2b1b', '3b2b', '4b3b', '3b3b']
             roomtype = st.multiselect("户型", options=roomtype_options, default=["Any"])
             roomtype_subunit = st.multiselect("房型", options=["Any", "All",'bedroom1', 'bedroom2', 'bedroom3', 'living_room'], default=["Any"])
-            available_start_date = st.date_input("入住时间")
-            available_end_date = st.date_input("至")
+            movein_date = st.date_input("入住时间")
             pet = st.checkbox("宠物友好", value=False)
+            washer_dryer = st.checkbox("室内洗烘", value=False)
+            on_market = st.checkbox("On Market", value=False)
 
         search_button = st.form_submit_button("搜索")
 
@@ -122,7 +121,6 @@ def app():
                                 Building.amenity_image AS 设施图片,
                                 Building.guarantee_policy AS 担保政策,
                                 Building.source AS 来源,
-                                Building.building_image AS 公寓图片,
                                 Building.website AS 公寓网站,
                                 sub_unit.sub_unit_id FROM sub_unit """
             join_conditions += "JOIN Unit ON sub_unit.Unit_ID = Unit.unit_id JOIN Building ON Unit.building_id = Building.building_id "
@@ -130,11 +128,8 @@ def app():
                 roomtype_subunit = ['bedroom1', 'bedroom2', 'bedroom3', 'living_room']
             roomtype_conditions = ["sub_unit.room_type = '{}'".format(rt) for rt in roomtype_subunit]
             search_conditions.append("({})".format(" OR ".join(roomtype_conditions)))
-            if available_start_date == available_end_date:
-                pass
-            else:
-                search_conditions.append(f"Unit.available_date >= '{available_start_date}'")
-                search_conditions.append(f"Unit.available_date <= '{available_end_date}'")
+            
+            search_conditions.append(f"Unit.available_date <= '{movein_date}' AND Unit.movein_before >= '{movein_date}'")
         
             if on_market:
                 search_conditions.append("Unit.on_market = 1")
@@ -144,7 +139,8 @@ def app():
             
         elif include_unit:
             # Query to include Unit and Building
-            search_query += """ Unit.unit_number AS 单元号,
+            search_query += """ Building.building_name AS 公寓名称,
+                                Unit.unit_number AS 单元号,
                                 Unit.rent_price AS 租金,
                                 Unit.floorplan AS 户型,
                                 Unit.floorplan_image AS 户型图,
@@ -155,15 +151,11 @@ def app():
                                 Unit.unit_description AS 单元描述,
                                 Unit.broker_fee AS 中介费,
                                 Unit.available_date AS Availability,
+                                Unit.movein_before,
                                 Unit.washer_dryer AS 室内洗烘,
                                 Unit.interest_pp_num AS 在拼人数, 
                                 Unit.on_market AS "On Market",
-                                Building.building_name AS 公寓名称,
                                 Building.location AS 区域,
-                                Building.address AS 地址,
-                                Building.city,
-                                Building.state,
-                                Building.zipcode,
                                 Building.building_description AS 公寓描述,
                                 Building.building_location_image AS 公寓位置图片,
                                 Building.pet AS 宠物友好,
@@ -172,16 +164,13 @@ def app():
                                 Building.amenity_image AS 设施图片,
                                 Building.guarantee_policy AS 担保政策,
                                 Building.source AS 来源,
-                                Building.building_image AS 公寓图片,
                                 Building.website AS 公寓网站,
-                                Unit.unit_id FROM Unit """
+                                Unit.unit_id,
+                                Building.building_id FROM Unit """
             join_conditions += "JOIN Building ON Unit.building_id = Building.building_id "
-            if available_start_date == available_end_date:
-                pass
-            else:
-                search_conditions.append(f"Unit.available_date >= '{available_start_date}'")
-                search_conditions.append(f"Unit.available_date <= '{available_end_date}'")
-        
+            
+            search_conditions.append(f"Unit.available_date <= '{movein_date}' AND Unit.movein_before >= '{movein_date}'")
+
             if on_market:
                 search_conditions.append("Unit.on_market = 1")
                 
@@ -203,7 +192,6 @@ def app():
                                 Building.amenity_image AS 设施图片,
                                 Building.guarantee_policy AS 担保政策,
                                 Building.source AS 来源,
-                                Building.building_image AS 公寓图片,
                                 Building.website AS 公寓网站,
                                 Building.building_id FROM Building """
             st.write("公寓:")
@@ -279,7 +267,6 @@ def app():
                         '设施图片': 'amenity_image',
                         '担保政策': 'guarantee_policy',
                         '来源': 'source',
-                        '公寓图片': 'building_image',
                         '公寓网站': 'website'
                     }
 
