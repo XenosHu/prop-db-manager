@@ -63,7 +63,7 @@ def app():
                             building_name, website, location, address, city, state, zipcode, building_description, 
                             building_location_image, pet, 
                             application_material, amenity_image, washer_dryer_image, guarantee_policy 
-                        ) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
+                        ) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
                     """
                     cursor.execute(building_insert_query, (
                         building_name, website, location, address, city, state, zipcode, building_description, 
