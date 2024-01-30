@@ -43,7 +43,6 @@ def app():
     
             with col2:
                 # Column 2 fields
-                building_image = st.text_input("大楼图片url")
                 building_location_image = st.text_input("大楼位置图片url")
                 amenity_image = st.text_input("设施图片url")
                 washer_dryer_image = st.text_input("洗烘设备url")
@@ -62,13 +61,13 @@ def app():
                     building_insert_query = """
                         INSERT INTO Building (
                             building_name, website, location, address, city, state, zipcode, building_description, 
-                            building_image, building_location_image, pet, 
+                            building_location_image, pet, 
                             application_material, amenity_image, washer_dryer_image, guarantee_policy 
                         ) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
                     """
                     cursor.execute(building_insert_query, (
                         building_name, website, location, address, city, state, zipcode, building_description, 
-                        building_image, building_location_image, pet, 
+                        building_location_image, pet, 
                         application_material, amenity_image, washer_dryer_image, guarantee_policy 
                     ))
     
