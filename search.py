@@ -71,12 +71,11 @@ def app():
             washer_dryer = st.checkbox("室内洗烘", value=False)
             on_market = st.checkbox("On Market", value=False)
 
-        search_button = st.form_submit_button("搜索")
-
+        search_apt = st.form_submit_button("搜索")
+        # search_building = st.form_submit_button("搜索公寓")
 
     # Handle Search
-    if search_button:
-
+    if search_apt:
         st.session_state['include_building_only'] = False
         st.session_state['include_unit'] = False
         st.session_state['include_subunit'] = False
@@ -346,7 +345,8 @@ def app():
                         execute_write_query(building_delete_query)
                 
                 st.success("删除成功！")
-                
+
+
        
 
 if __name__ == "__main__":
