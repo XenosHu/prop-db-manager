@@ -65,9 +65,8 @@ def app():
             roomtype_options = ["Any", 'Studio', '1b1b', '2b2b', '2b1b', '3b2b', '4b3b', '3b3b']
             roomtype = st.multiselect("户型", options=roomtype_options, default=["Any"])
             roomtype_subunit = st.multiselect("房型", options=["Any", "All",'bedroom1', 'bedroom2', 'bedroom3', 'living_room'], default=["Any"])
+            movein_date = st.date_input("入住时间")
             if_time = st.checkbox('搜索时间',value = False)
-            if if_time:
-                movein_date = st.date_input("入住时间")
             pet = st.checkbox("宠物友好", value=False)
             washer_dryer = st.checkbox("室内洗烘", value=False)
             on_market = st.checkbox("On Market", value=False)
@@ -129,7 +128,7 @@ def app():
                 roomtype_subunit = ['bedroom1', 'bedroom2', 'bedroom3', 'living_room']
             roomtype_conditions = ["sub_unit.room_type = '{}'".format(rt) for rt in roomtype_subunit]
             search_conditions.append("({})".format(" OR ".join(roomtype_conditions)))
-            if movein_date:
+            if movein_date and if_time:
                 search_conditions.append(f"Unit.available_date <= '{movein_date}' AND Unit.movein_before >= '{movein_date}'")
         
             if on_market:
@@ -168,7 +167,7 @@ def app():
                                 Unit.unit_id,
                                 Building.building_id FROM Unit """
             join_conditions += "JOIN Building ON Unit.building_id = Building.building_id "
-            if movein_date:
+            if movein_date and if_time:
                 search_conditions.append(f"Unit.available_date <= '{movein_date}' AND Unit.movein_before >= '{movein_date}'")
 
             if on_market:
