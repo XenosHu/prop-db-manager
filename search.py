@@ -71,6 +71,7 @@ def app():
             washer_dryer = st.checkbox("室内洗烘", value=False)
             on_market = st.checkbox("On Market", value=False)
 
+        include_unit = st.checkbox('搜索unit',value=False)
         search_apt = st.form_submit_button("搜索")
         # search_building = st.form_submit_button("搜索公寓")
 
@@ -81,7 +82,7 @@ def app():
         st.session_state['include_subunit'] = False
 
         include_building = building_name != "All"
-        include_unit = min_price!= 0 or max_price != 0 or washer_dryer == True
+        # include_unit = min_price!= 0 or max_price != 0 or washer_dryer == True or on_market == True or 
         include_subunit = roomtype_subunit != ["Any"]
         
         search_query = "SELECT"
