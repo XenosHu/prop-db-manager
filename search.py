@@ -55,14 +55,14 @@ def app():
         with col1:
             # 第一列的字段
             building_name = st.selectbox("公寓名称", get_building_name())
-            min_price = st.number_input("最低价格", min_value=0, step=1, format='%d')
+            min_price = st.number_input("最低价格", min_value=0, step=1, format='%d',default = 0)
             max_price = st.number_input("最高价格", min_value=0, step=1, format='%d')
             location_options = ["Any", "New Jersey", "Manhattan upper", "Manhattan mid", "Manhattan lower", "LIC", "Brooklyn"]
             location = st.multiselect("位置", options=location_options, default=["Any"])
 
         with col2:
             # 第二列的字段
-            roomtype_options = ["Any", 'Studio', '1b1b', '2b2b', '2b1b', '3b2b', '4b3b', '3b3b']
+            roomtype_options = ["Any", 'Studio', '1b1b', '2b2b', '2b1b', '3b2b', '3b3b','4b3b']
             roomtype = st.multiselect("户型", options=roomtype_options, default=["Any"])
             roomtype_subunit = st.multiselect("房型", options=["Any", "All",'bedroom1', 'bedroom2', 'bedroom3', 'living_room'], default=["Any"])
             movein_date = st.date_input("入住时间")
