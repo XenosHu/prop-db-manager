@@ -28,22 +28,13 @@ def app():
         return df
 
     # Function to execute write query (update, delete)
-    def execute_write_query(query, values=None):
-        st.write(query, values)
+    def execute_write_query(query):
+        # st.write(query)
         connection = get_db_connection()
         cursor = connection.cursor()
-        try:
-            if values:
-                cursor.execute(query, values)
-            else:
-                cursor.execute(query)
-            connection.commit()
-        except Exception as e:
-            st.error(f"执行查询时出错：{e}")
-            connection.rollback()
-        finally:
-            connection.close()
-    
+        cursor.execute(query)
+        connection.commit()
+        connection.close()
 
     def get_chatbot_wx_ids():
         query = "SELECT DISTINCT chatbot_wx_id FROM user WHERE chatbot_wx_id IS NOT NULL"
@@ -88,7 +79,7 @@ def app():
         grid_response = AgGrid(
             df, 
             gridOptions=grid_options,
-            height=500, 
+            height=600, 
             width='100%',
             data_return_mode='AS_INPUT', 
             update_mode='MODEL_CHANGED',
@@ -107,22 +98,13 @@ def app():
                         'chatbot_wx_id': 'chatbot_wx_id',
                         'sche_listing': 'sche_listing'
                     }
-                    for i in updated_df.index:
-                        columns = [col for col in updated_df.columns if col in user_column_name_mapping]
-                        values = [updated_df.at[i, col] for col in columns]
-                        values = [
-                            value if not pd.isna(value) else None for value in values
-                        ]
 
-                        set_clause = ", ".join([f"{user_column_name_mapping[col]} = %s" for col in columns])
-                        user_id = updated_df.at[i, 'user_id']
-                        user_update_query = f"UPDATE user SET {set_clause} WHERE user_id = %s"
-                        try:
-                            execute_write_query(user_update_query, values + [user_id])
-                        except Exception as e:
-                            st.error(f"更新失败：{e}")
-                        else:
-                            st.success("更新成功！")
+                    for i in updated_df.index:
+                        user_update_query = "UPDATE user SET "
+                        user_update_query += ", ".join([f"{user_column_name_mapping[col]} = '{updated_df.at[i, col]}'" for col in updated_df.columns if col in user_column_name_mapping])
+                        user_update_query += f" WHERE user_id = {updated_df.at[i, 'user_id']}"
+                        execute_write_query(user_update_query)
+                    st.success("更新成功！")
 
         selected = grid_response['selected_rows']
         if selected:
