@@ -104,7 +104,6 @@ def app():
                         'roommate_preference': 'roommate_preference',
                         'sex': 'sex',
                         'wechat_id': 'wechat_id',
-                        'conversation': 'conversation',
                         'chatbot_wx_id': 'chatbot_wx_id',
                         'sche_listing': 'sche_listing'
                     }
