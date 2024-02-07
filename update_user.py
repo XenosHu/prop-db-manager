@@ -110,6 +110,10 @@ def app():
                     for i in updated_df.index:
                         columns = [col for col in updated_df.columns if col in user_column_name_mapping]
                         values = [updated_df.at[i, col] for col in columns]
+                        values = [
+                            value if not pd.isna(value) else None for value in values
+                        ]
+
                         set_clause = ", ".join([f"{user_column_name_mapping[col]} = %s" for col in columns])
                         user_id = updated_df.at[i, 'user_id']
                         user_update_query = f"UPDATE user SET {set_clause} WHERE user_id = %s"
