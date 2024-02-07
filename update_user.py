@@ -35,12 +35,18 @@ def app():
         cursor.execute(query)
         connection.commit()
         connection.close()
+
+    def get_chatbot_wx_ids():
+        query = "SELECT DISTINCT chatbot_wx_id FROM user WHERE chatbot_wx_id IS NOT NULL"
+        df = execute_read_query(query)
+        return df['chatbot_wx_id'].tolist()
         
     with st.form("search_form"):
-        chatbot_wx_id = st.text_input("Chatbot 微信ID")
+        chatbot_wx_ids = get_chatbot_wx_ids()
+        chatbot_wx_id = st.selectbox("Chatbot 微信ID", ['Any'] + chatbot_wx_ids)
         sche_listing_options = ["Any", "Yes", "No"]
-        sche_listing = st.selectbox("是否安排看房", options=sche_listing_options)
-        search_user = st.form_submit_button("搜索用户")
+        sche_listing = st.selectbox("是否推房", options=sche_listing_options)
+        search_user = st.form_submit_button("显示表格")
 
     # Handle Search
     if search_user:
@@ -49,8 +55,8 @@ def app():
         FROM user
         WHERE 1=1
         """
-        if chatbot_wx_id:
-            search_query += f" AND chatbot_wx_id LIKE '%{chatbot_wx_id}%'"
+        if chatbot_wx_id != 'Any':
+            search_query += f" AND chatbot_wx_id = '{chatbot_wx_id}'"
 
         if sche_listing != "Any":
             sche_listing_value = 1 if sche_listing == "Yes" else 0
