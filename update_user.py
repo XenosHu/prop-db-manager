@@ -29,7 +29,7 @@ def app():
 
     # Function to execute write query (update, delete)
     def execute_write_query(query):
-        # st.write(query)
+        st.write(query)
         connection = get_db_connection()
         cursor = connection.cursor()
         cursor.execute(query)
@@ -79,7 +79,7 @@ def app():
         grid_response = AgGrid(
             df, 
             gridOptions=grid_options,
-            height=600, 
+            height=500, 
             width='100%',
             data_return_mode='AS_INPUT', 
             update_mode='MODEL_CHANGED',
