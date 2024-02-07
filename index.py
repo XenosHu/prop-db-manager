@@ -4,6 +4,7 @@ import insert_build
 import insert_unit
 import search
 import sql_test
+import update_user
 import manage
 import hmac
 
