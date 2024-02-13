@@ -3,6 +3,7 @@ import mysql.connector
 import pandas as pd
 from st_aggrid import AgGrid, GridOptionsBuilder
 from config import DATABASE_CONFIG
+import numpy as np
 
 def app():
     st.title("更新User")
