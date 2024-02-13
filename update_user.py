@@ -43,6 +43,7 @@ def app():
         finally:
             cursor.close()
             connection.close()
+        return None
 
 
     def get_chatbot_wx_ids():
