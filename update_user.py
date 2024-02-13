@@ -33,7 +33,7 @@ def app():
         connection = get_db_connection()
         cursor = connection.cursor()
         st.write(query)
-        print(params)
+        st.wirte(params)
         try:
             if params:
                 cursor.execute(query, params)
