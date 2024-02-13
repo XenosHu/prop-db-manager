@@ -111,7 +111,7 @@ def app():
                         for col in updated_df.columns:
                             if col != 'user_id':  # 排除 user_id 作为更新的一部分，但将其用作 WHERE 条件
                                 value = updated_df.at[i, col]
-        
+                                set_clauses.append(f"{col} = %s")
                                 params.append(str(value))
                         user_update_query = f"UPDATE user SET {', '.join(set_clauses)} WHERE user_id = %s"
                         params.append(updated_df.at[i, 'user_id'])  # 将 user_id 添加到参数列表的末尾，用于 WHERE 条件
