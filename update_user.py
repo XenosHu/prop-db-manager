@@ -13,7 +13,7 @@ def app():
         return connection
 
     # Function to execute read query
-    def execute_read_query(query=None):
+     def execute_read_query(query=None):
         # st.write(query)
         connection = get_db_connection()
         if query is None:
@@ -26,15 +26,24 @@ def app():
         df = pd.read_sql(query, connection)
         connection.close()
         return df
-
-    # Function to execute write query (update, delete)
-    def execute_write_query(query):
-        # st.write(query)
+         
+    def execute_write_query(query, params=None):
         connection = get_db_connection()
         cursor = connection.cursor()
-        cursor.execute(query)
-        connection.commit()
-        connection.close()
+        try:
+            if params:
+                cursor.execute(query, params)
+            else:
+                cursor.execute(query)
+            connection.commit()
+            st.write(query,params)
+        except mysql.connector.Error as error:
+            print(f"Failed to execute query: {error}")
+            connection.rollback()
+        finally:
+            cursor.close()
+            connection.close()
+
 
     def get_chatbot_wx_ids():
         query = "SELECT DISTINCT chatbot_wx_id FROM user WHERE chatbot_wx_id IS NOT NULL"
@@ -90,20 +99,18 @@ def app():
             updated_df = grid_response['data']
             if not updated_df.equals(df):
                 if st.button('更新'):
-                    user_column_name_mapping = {
-                        'preference': 'preference',
-                        'roommate_preference': 'roommate_preference',
-                        'sex': 'sex',
-                        'wechat_id': 'wechat_id',
-                        'chatbot_wx_id': 'chatbot_wx_id',
-                        'sche_listing': 'sche_listing'
-                    }
 
                     for i in updated_df.index:
-                        user_update_query = "UPDATE user SET "
-                        user_update_query += ", ".join([f"{user_column_name_mapping[col]} = '{updated_df.at[i, col]}'" for col in updated_df.columns if col in user_column_name_mapping])
-                        user_update_query += f" WHERE user_id = {updated_df.at[i, 'user_id']}"
-                        execute_write_query(user_update_query)
+                        set_clauses = []
+                        params = []
+                        for col in updated_df.columns:
+                            if col != 'user_id':  # 排除 user_id 作为更新的一部分，但将其用作 WHERE 条件
+                                set_clauses.append(f"{col} = %s")
+                                params.append(updated_df.at[i, col])
+                        user_update_query = f"UPDATE user SET {', '.join(set_clauses)} WHERE user_id = %s"
+                        params.append(updated_df.at[i, 'user_id'])  # 将 user_id 添加到参数列表的末尾，用于 WHERE 条件
+                        execute_write_query(user_update_query, params)
+                    
                     st.success("更新成功！")
 
         selected = grid_response['selected_rows']
