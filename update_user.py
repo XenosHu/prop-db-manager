@@ -13,7 +13,8 @@ def app():
         return connection
 
     # Function to execute read query
-     def execute_read_query(query=None):
+        
+    def execute_read_query(query=None):
         # st.write(query)
         connection = get_db_connection()
         if query is None:
