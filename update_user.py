@@ -116,10 +116,12 @@ def app():
                                 elif isinstance(value, np.float64):
                                     value = float(value)  # 转换为 Python 的 float
                                 set_clauses.append(f"{col} = %s")
-                           
+                                st.write(value)
+                             
                                 params.append(str(value))
                         user_update_query = f"UPDATE user SET {', '.join(set_clauses)} WHERE user_id = %s"
                         params.append(updated_df.at[i, 'user_id'])  # 将 user_id 添加到参数列表的末尾，用于 WHERE 条件
+                        st.write(params)
                         execute_write_query(user_update_query, params)
                     
                     st.success("更新成功！")
