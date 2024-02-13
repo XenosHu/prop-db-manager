@@ -3,62 +3,53 @@ import mysql.connector
 import pandas as pd
 from st_aggrid import AgGrid, GridOptionsBuilder
 from config import DATABASE_CONFIG
-import numpy as np
 
 def app():
     st.title("更新User")
 
+    # Function to get database connection
     def get_db_connection():
-        return mysql.connector.connect(**DATABASE_CONFIG)
+        connection = mysql.connector.connect(**DATABASE_CONFIG)
+        return connection
 
-    def execute_read_query(query):
+    # Function to execute read query
+    def execute_read_query(query=None):
+        # st.write(query)
         connection = get_db_connection()
+        if query is None:
+            # Adjust this default query as per your requirements
+            query = """
+            SELECT Unit.*, Building.building_name, Building.location
+            FROM Unit
+            JOIN Building ON Unit.building_id = Building.building_id
+            """
         df = pd.read_sql(query, connection)
         connection.close()
         return df
 
-    def execute_write_query(query, params):
+    # Function to execute write query (update, delete)
+    def execute_write_query(query):
+        # st.write(query)
         connection = get_db_connection()
         cursor = connection.cursor()
-        try:
-            cursor.execute(query, params)
-            connection.commit()
-        except mysql.connector.Error as error:
-            st.error(f"Failed to execute query: {error}")
-            connection.rollback()
-        finally:
-            cursor.close()
-            connection.close()
+        cursor.execute(query)
+        connection.commit()
+        connection.close()
 
     def get_chatbot_wx_ids():
         query = "SELECT DISTINCT chatbot_wx_id FROM user WHERE chatbot_wx_id IS NOT NULL"
         df = execute_read_query(query)
         return df['chatbot_wx_id'].tolist()
+        
+    with st.form("search_form"):
+        chatbot_wx_ids = get_chatbot_wx_ids()
+        chatbot_wx_id = st.selectbox("Chatbot 微信ID", ['Any'] + chatbot_wx_ids)
+        sche_listing_options = ["Any", "Yes", "No"]
+        sche_listing = st.selectbox("是否推房", options=sche_listing_options)
+        search_user = st.form_submit_button("显示表格")
 
-    def find_changes(original_df, updated_df):
-        changes = []
-        for i in updated_df.index:
-            for col in updated_df.columns:
-                if updated_df.at[i, col] != original_df.at[i, col]:
-                    changes.append({
-                        'user_id': updated_df.at[i, 'user_id'],
-                        'field_name': col,
-                        'new_value': updated_df.at[i, col]
-                    })
-        return changes
-
-    def update_database(updates):
-        for update in updates:
-            query = f"UPDATE user SET {update['field_name']} = %s WHERE user_id = %s"
-            params = (update['new_value'], update['user_id'])
-            execute_write_query(query, params)
-
-    chatbot_wx_ids = get_chatbot_wx_ids()
-    chatbot_wx_id = st.selectbox("Chatbot 微信ID", ['Any'] + chatbot_wx_ids)
-    sche_listing_options = ["Any", "Yes", "No"]
-    sche_listing = st.selectbox("是否推房", options=sche_listing_options)
-
-    if st.button("显示表格"):
+    # Handle Search
+    if search_user:
         search_query = """
         SELECT user_id, preference, roommate_preference, sex, wechat_id, conversation, chatbot_wx_id, sche_listing
         FROM user
@@ -66,30 +57,67 @@ def app():
         """
         if chatbot_wx_id != 'Any':
             search_query += f" AND chatbot_wx_id = '{chatbot_wx_id}'"
+
         if sche_listing != "Any":
             sche_listing_value = 1 if sche_listing == "Yes" else 0
             search_query += f" AND sche_listing = {sche_listing_value}"
-        
+
         df = execute_read_query(search_query)
+        st.session_state['search_results'] = df
+
+    # Display Search Results
+    if 'search_results' in st.session_state:
+        df = st.session_state['search_results']
+
+        # Set up AgGrid options for editable grid
         gb = GridOptionsBuilder.from_dataframe(df)
-        gb.configure_default_column(editable=True)
+        gb.configure_default_column(editable=True, minWidth=150)
         gb.configure_selection('multiple', use_checkbox=True)
         grid_options = gb.build()
-        grid_response = AgGrid(df, gridOptions=grid_options, update_mode='MODEL_CHANGED', fit_columns_on_grid_load=True)
-        
+
+        # Display the grid
+        grid_response = AgGrid(
+            df, 
+            gridOptions=grid_options,
+            height=600, 
+            width='100%',
+            data_return_mode='AS_INPUT', 
+            update_mode='MODEL_CHANGED',
+            fit_columns_on_grid_load=True
+        )
+
         if 'data' in grid_response:
             updated_df = grid_response['data']
-            st.session_state['updated_df'] = updated_df
+            if not updated_df.equals(df):
+                if st.button('更新'):
+                    user_column_name_mapping = {
+                        'preference': 'preference',
+                        'roommate_preference': 'roommate_preference',
+                        'sex': 'sex',
+                        'wechat_id': 'wechat_id',
+                        'chatbot_wx_id': 'chatbot_wx_id',
+                        'sche_listing': 'sche_listing'
+                    }
 
-    if 'updated_df' in st.session_state:
-        if st.button('提交更改'):
-            original_df = execute_read_query(search_query)  # 重新获取原始数据以查找更改
-            changes = find_changes(original_df, st.session_state['updated_df'])
-            if changes:
-                update_database(changes)
-                st.success("所有更改已成功提交到数据库。")
-            else:
-                st.info("没有检测到更改。")
+                    for i in updated_df.index:
+                        user_update_query = "UPDATE user SET "
+                        user_update_query += ", ".join([f"{user_column_name_mapping[col]} = '{updated_df.at[i, col]}'" for col in updated_df.columns if col in user_column_name_mapping])
+                        user_update_query += f" WHERE user_id = {updated_df.at[i, 'user_id']}"
+                        execute_write_query(user_update_query)
+                    st.success("更新成功！")
+
+        selected = grid_response['selected_rows']
+        if selected:
+            st.session_state['selected_for_deletion'] = selected
+            
+            if st.button('删除'):
+                for row in st.session_state['selected_for_deletion']:
+                    user_delete_query = f"DELETE FROM user WHERE user_id = {row['user_id']}"
+                    execute_write_query(user_delete_query)
+                st.success("删除成功！")
+
+
+       
 
 if __name__ == "__main__":
     app()
