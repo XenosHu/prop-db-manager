@@ -31,13 +31,15 @@ def app():
     def execute_write_query(query, params=None):
         connection = get_db_connection()
         cursor = connection.cursor()
+        st.write(query)
+        st.write(params)
         try:
             if params:
                 cursor.execute(query, params)
             else:
                 cursor.execute(query)
             connection.commit()
-            st.write(query,params)
+            
         except mysql.connector.Error as error:
             print(f"Failed to execute query: {error}")
             connection.rollback()
