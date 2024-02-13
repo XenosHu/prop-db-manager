@@ -111,7 +111,12 @@ def app():
                         for col in updated_df.columns:
                             if col != 'user_id':  # 排除 user_id 作为更新的一部分，但将其用作 WHERE 条件
                                 value = updated_df.at[i, col]
+                                if isinstance(value, (np.int64, np.int32, np.int_)):
+                                    value = int(value)  # 转换为 Python 的 int
+                                elif isinstance(value, np.float64):
+                                    value = float(value)  # 转换为 Python 的 float
                                 set_clauses.append(f"{col} = %s")
+                           
                                 params.append(str(value))
                         user_update_query = f"UPDATE user SET {', '.join(set_clauses)} WHERE user_id = %s"
                         params.append(updated_df.at[i, 'user_id'])  # 将 user_id 添加到参数列表的末尾，用于 WHERE 条件
