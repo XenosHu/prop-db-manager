@@ -3,7 +3,7 @@ import mysql.connector
 import pandas as pd
 from st_aggrid import AgGrid, GridOptionsBuilder
 from config import DATABASE_CONFIG
-
+    
 def app():
     st.title("更新User")
 
@@ -115,8 +115,30 @@ def app():
                     user_delete_query = f"DELETE FROM user WHERE user_id = {row['user_id']}"
                     execute_write_query(user_delete_query)
                 st.success("删除成功！")
-
-
+    
+    with st.form("add_user_form"):
+        st.write("添加新用户")
+        # 添加字段
+        new_wechat_id = st.text_input("微信ID", "")
+        new_preference = st.text_input("偏好", "")
+        new_roommate_preference = st.text_input("室友偏好", "")
+        new_sex = st.selectbox("性别", ["", "Male", "Female", "Other"])
+        new_chatbot_wx_id = st.text_input("Chatbot 微信ID", "")
+        new_sche_listing = st.selectbox("是否推房", ["", "Yes", "No"])
+        
+        # 提交按钮
+        submit_new_user = st.form_submit_button("添加用户")
+        
+    if submit_new_user:
+        # 处理是/否为布尔值
+        new_sche_listing_value = 1 if new_sche_listing == "Yes" else 0
+        # 插入新用户数据到数据库
+        insert_query = f"""
+        INSERT INTO user (wechat_id, preference, roommate_preference, sex, chatbot_wx_id, sche_listing)
+        VALUES ('{new_wechat_id}', '{new_preference}', '{new_roommate_preference}', '{new_sex}', '{new_chatbot_wx_id}', {new_sche_listing_value})
+        """
+        execute_write_query(insert_query)
+        st.success("用户添加成功！")
        
 
 if __name__ == "__main__":
