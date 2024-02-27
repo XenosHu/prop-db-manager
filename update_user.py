@@ -51,7 +51,7 @@ def app():
     # Handle Search
     if search_user:
         search_query = """
-        SELECT user_id, preference, roommate_preference, sex, wechat_id, conversation, chatbot_wx_id, sche_listing
+        SELECT user_id, preference, roommate_preference, sex, wechat_id, conversation, chatbot_wx_id, sche_listing, is_group
         FROM user
         WHERE 1=1
         """
@@ -96,7 +96,8 @@ def app():
                         'sex': 'sex',
                         'wechat_id': 'wechat_id',
                         'chatbot_wx_id': 'chatbot_wx_id',
-                        'sche_listing': 'sche_listing'
+                        'sche_listing': 'sche_listing',
+                        'is_group':'is_group'
                     }
 
                     for i in updated_df.index:
