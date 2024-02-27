@@ -132,8 +132,7 @@ def app():
         submit_new_user = st.form_submit_button("添加用户")
         
     if submit_new_user:
-        # 处理是/否为布尔值
-        new_sche_listing_value = 1 if new_sche_listing == "Yes" else 0
+       
         # 插入新用户数据到数据库
         insert_query = f"""
         INSERT INTO user (wechat_id, preference, chatbot_wx_id, sche_listing,is_group)
