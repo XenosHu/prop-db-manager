@@ -125,8 +125,8 @@ def app():
         # new_roommate_preference = st.text_input("室友偏好", "")
         # new_sex = st.selectbox("性别", ["", "Male", "Female", "Other"])
         new_chatbot_wx_id = st.text_input("Chatbot昵称", "")
-        new_sche_listing = st.selectbox("定时推房", ["", "Yes", "No"])
-        is_group = st.checkbox(defualt = False)
+        new_sche_listing = st.checkbox("定时推房",value = False)
+        is_group = st.checkbox('群聊',value = False)
         
         # 提交按钮
         submit_new_user = st.form_submit_button("添加用户")
