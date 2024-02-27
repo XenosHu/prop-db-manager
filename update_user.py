@@ -126,6 +126,7 @@ def app():
         # new_sex = st.selectbox("性别", ["", "Male", "Female", "Other"])
         new_chatbot_wx_id = st.text_input("Chatbot昵称", "")
         new_sche_listing = st.selectbox("定时推房", ["", "Yes", "No"])
+        is_group = st.checkbox(defualt = False)
         
         # 提交按钮
         submit_new_user = st.form_submit_button("添加用户")
@@ -135,8 +136,8 @@ def app():
         new_sche_listing_value = 1 if new_sche_listing == "Yes" else 0
         # 插入新用户数据到数据库
         insert_query = f"""
-        INSERT INTO user (wechat_id, preference, chatbot_wx_id, sche_listing)
-        VALUES ('{new_wechat_id}', '{new_preference}', '{new_chatbot_wx_id}', {new_sche_listing_value})
+        INSERT INTO user (wechat_id, preference, chatbot_wx_id, sche_listing,is_group)
+        VALUES ('{new_wechat_id}', '{new_preference}', '{new_chatbot_wx_id}', {new_sche_listing_value},{is_group})
         """
         execute_write_query(insert_query)
         st.success("用户添加成功！")
