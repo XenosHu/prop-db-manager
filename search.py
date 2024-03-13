@@ -178,6 +178,7 @@ def app():
         else:
             # Query to include only Building
             search_query += """ Building.building_name AS 公寓名称,
+                                Building.op AS OP,
                                 Building.location AS 区域,
                                 Building.address AS 地址,
                                 Building.city,
@@ -192,7 +193,6 @@ def app():
                                 Building.guarantee_policy AS 担保政策,
                                 Building.source AS 来源,
                                 Building.website AS 公寓网站,
-                                Building.op AS OP,
                                 Building.building_id FROM Building """
             st.write("公寓:")
             st.session_state['include_building_only'] = True
