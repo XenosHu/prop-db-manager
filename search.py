@@ -192,6 +192,7 @@ def app():
                                 Building.guarantee_policy AS 担保政策,
                                 Building.source AS 来源,
                                 Building.website AS 公寓网站,
+                                Building.op AS OP,
                                 Building.building_id FROM Building """
             st.write("公寓:")
             st.session_state['include_building_only'] = True
@@ -266,7 +267,8 @@ def app():
                         '设施图片': 'amenity_image',
                         '担保政策': 'guarantee_policy',
                         '来源': 'source',
-                        '公寓网站': 'website'
+                        '公寓网站': 'website',
+                        'OP':'op'
                     }
 
                     
