@@ -190,7 +190,7 @@ def app():
                                 Building.guarantee_policy AS 担保政策,
                                 Building.source AS 来源,
                                 Building.website AS 公寓网站,
-                                Building.movein_range，
+                                Building.movein_range,
                                 Building.building_id FROM Building """
             st.write("公寓:")
             st.session_state['include_building_only'] = True
