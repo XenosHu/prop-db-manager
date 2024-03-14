@@ -181,9 +181,6 @@ def app():
                                 Building.op AS OP,
                                 Building.location AS 区域,
                                 Building.address AS 地址,
-                                Building.city,
-                                Building.state,
-                                Building.zipcode,
                                 Building.building_description AS 公寓描述,
                                 Building.building_location_image AS 公寓位置图片,
                                 Building.pet AS 宠物友好,
@@ -193,6 +190,7 @@ def app():
                                 Building.guarantee_policy AS 担保政策,
                                 Building.source AS 来源,
                                 Building.website AS 公寓网站,
+                                Building.movein_range，
                                 Building.building_id FROM Building """
             st.write("公寓:")
             st.session_state['include_building_only'] = True
@@ -256,9 +254,6 @@ def app():
                         '公寓名称': 'building_name',
                         '区域': 'location',
                         '地址': 'address',
-                        'city': 'city',
-                        'state': 'state',
-                        'zipcode': 'zipcode',
                         '公寓描述': 'building_description',
                         '公寓位置图片': 'building_location_image',
                         '宠物友好': 'pet',
@@ -285,7 +280,8 @@ def app():
                         '中介费': 'broker_fee',
                         'Availability': 'available_date',
                         '室内洗烘': 'washer_dryer',
-                        'On Market':'on_market'
+                        'On Market':'on_market',
+                        'movein_range': 'movein_range'
                     }
 
                     sub_unit_column_name_mapping = {
