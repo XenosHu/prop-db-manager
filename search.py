@@ -337,12 +337,12 @@ def app():
 
                     elif is_unit_included:
                         # DELETE FROM Unit WHERE unit_id = value
-                        unit_delete_query = f"DELETE FROM Unit WHERE unit_id = {row['unit_id']}"
+                        unit_delete_query = f"DELETE FROM Unit WHERE unit_id = {int(row['unit_id'])}"
                         execute_write_query(unit_delete_query)
 
                     else:
                         # DELETE FROM Building WHERE building_id = value
-                        building_delete_query = f"DELETE FROM Building WHERE building_id = {row['building_id']}"
+                        building_delete_query = f"DELETE FROM Building WHERE building_id = {int(row['building_id'])}"
                         execute_write_query(building_delete_query)
                 
                 st.success("删除成功！")
