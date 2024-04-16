@@ -342,7 +342,7 @@ def app():
 
                     else:
                         # DELETE FROM Building WHERE building_id = value
-                        st.write(row)
+                        st.write(st.session_state['selected_for_deletion'])
                         building_delete_query = f"DELETE FROM Building WHERE building_id = {int(row['building_id'])}"
                         execute_write_query(building_delete_query)
                 
