@@ -329,7 +329,8 @@ def app():
                 is_building_only = st.session_state.get('include_building_only', False)
                 is_unit_included = st.session_state.get('include_unit', False)
                 is_subunit_included = st.session_state.get('include_subunit', False)
-                for row in st.session_state['selected_for_deletion']:
+                # for row in st.session_state['selected_for_deletion']:
+                for row in selected:
                     st.write(type(row))
                     st.write(row)
                     if is_subunit_included:
