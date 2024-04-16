@@ -319,9 +319,9 @@ def app():
         
         # Store selected rows for deletion
         selected = grid_response['selected_rows']
-        st.write(len(selected))
-        if len(selected) > 0:
-            st.write('after_select')
+        # st.write(len(selected))
+        if selected and len(selected) > 0:
+            # st.write('after_select')
             st.session_state['selected_for_deletion'] = selected
             #st.write("Selected rows:", selected)
             
