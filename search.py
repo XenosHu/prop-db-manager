@@ -319,7 +319,7 @@ def app():
         
         # Store selected rows for deletion
         selected = grid_response['selected_rows']
-        st.write(type(selected))
+        # st.write(type(selected))
         if not selected.empty:
             # st.write('after_select')
             st.session_state['selected_for_deletion'] = selected
@@ -331,8 +331,8 @@ def app():
                 is_subunit_included = st.session_state.get('include_subunit', False)
                 # for row in st.session_state['selected_for_deletion']:
                 for row in selected:
-                    st.write(type(row))
-                    # st.write(row)
+                    # st.write(type(row))
+                    st.write(row)
                     if is_subunit_included:
                         # DELETE FROM Sub_Unit WHERE sub_unit_id = value
                         sub_unit_delete_query = f"DELETE FROM sub_unit WHERE sub_unit_id = {row['sub_unit_id']}"
