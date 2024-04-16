@@ -330,6 +330,8 @@ def app():
                 is_unit_included = st.session_state.get('include_unit', False)
                 is_subunit_included = st.session_state.get('include_subunit', False)
                 for row in st.session_state['selected_for_deletion']:
+                    st.write(type(row))
+                    st.write(row)
                     if is_subunit_included:
                         # DELETE FROM Sub_Unit WHERE sub_unit_id = value
                         sub_unit_delete_query = f"DELETE FROM sub_unit WHERE sub_unit_id = {row['sub_unit_id']}"
@@ -342,7 +344,7 @@ def app():
 
                     else:
                         # DELETE FROM Building WHERE building_id = value
-                        st.write(row['building_id'])
+                        # st.write(row['building_id'])
                         building_delete_query = f"DELETE FROM Building WHERE building_id = {int(row['building_id'])}"
                         execute_write_query(building_delete_query)
                 
