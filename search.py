@@ -263,7 +263,8 @@ def app():
                         '担保政策': 'guarantee_policy',
                         '来源': 'source',
                         '公寓网站': 'website',
-                        'OP':'op'
+                        'OP':'op',
+                        'movein_range': 'movein_range'
                     }
 
                     
@@ -281,7 +282,7 @@ def app():
                         'Availability': 'available_date',
                         '室内洗烘': 'washer_dryer',
                         'On Market':'on_market',
-                        'movein_range': 'movein_range'
+                        
                     }
 
                     sub_unit_column_name_mapping = {
