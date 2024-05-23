@@ -33,17 +33,23 @@ def app():
             with col1:
                 # Column 1 fields
                 building_name = st.text_input("大楼名称")
-                location = st.selectbox("区域", ["New Jersey", "Manhattan upper", "Manhattan mid", "Manhattan lower", "LIC", "Brooklyn", "Bronx", "Queens", "Other"])
+                location = st.selectbox("区域", ["New Jersey", "Manhattan upper", "Manhattan lower", "LIC", "Brooklyn", "Bronx", "Queens", "Other"])
                 building_description = st.text_area("大楼介绍")
                 building_location_image = st.text_input("大楼位置图片url")
                 pet = st.checkbox("宠物友好", value=False)
+                op = st.checkbox("OP", value=False)
+                stu_no_guar = st.checkbox("学生免担保", value=False)
     
             with col2:
                 # Column 2 fields
-                movein_range = st.number_input('move_in_range')
+                movein_range = st.number_input("move_in_range", min_value=0, step=1, format='%d')
+                tavel_NYU = st.number_input("通勤NYU", min_value=0, step=1, format='%d')
+                tavel_CU = st.number_input("通勤哥大", min_value=0, step=1, format='%d')
+                tavel_PS = st.number_input("通勤Parsons", min_value=0, step=1, format='%d')
+                tavel_SVA = st.number_input("通勤SVA", min_value=0, step=1, format='%d')
+
                 
       
-    
             building_form_submitted = st.form_submit_button("添加公寓")
             
             if building_form_submitted:
@@ -54,15 +60,13 @@ def app():
 
                     building_insert_query = """
                         INSERT INTO Building (
-                            building_name, website, location, address, city, state, zipcode, building_description, 
-                            building_location_image, pet, 
-                            application_material, amenity_image, washer_dryer_image, guarantee_policy 
-                        ) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
+                            building_name, location, building_description, building_location_image, pet, 
+                            op,stu_no_guarantee,movein_range,travel_NYU,travel_ColumbiaUniversity,travel_Parsons,travel_SVA 
+                        ) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
                     """
                     cursor.execute(building_insert_query, (
-                        building_name, website, location, address, city, state, zipcode, building_description, 
-                        building_location_image, pet, 
-                        application_material, amenity_image, washer_dryer_image, guarantee_policy 
+                        building_name, location, building_description,building_location_image, pet, 
+                       op, stu_no_guar,movein_range,tavel_NYU,tavel_CU,tavel_PS,tavel_SVA
                     ))
     
                     connection.commit()
