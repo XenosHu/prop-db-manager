@@ -33,22 +33,16 @@ def app():
             with col1:
                 # Column 1 fields
                 building_name = st.text_input("大楼名称")
-                website = st.text_input("大楼网站")
                 location = st.selectbox("区域", ["New Jersey", "Manhattan upper", "Manhattan mid", "Manhattan lower", "LIC", "Brooklyn", "Bronx", "Queens", "Other"])
-                address = st.text_input("详细地址")
-                city = st.text_input("城市")
-                state = st.text_input("州")
-                zipcode = st.text_input("邮编")
                 building_description = st.text_area("大楼介绍")
+                building_location_image = st.text_input("大楼位置图片url")
+                pet = st.checkbox("宠物友好", value=False)
     
             with col2:
                 # Column 2 fields
-                building_location_image = st.text_input("大楼位置图片url")
-                amenity_image = st.text_input("设施图片url")
-                washer_dryer_image = st.text_input("洗烘设备url")
-                pet = st.checkbox("宠物友好", value=False)
-                application_material = st.text_area("申请材料")
-                guarantee_policy = st.text_area("担保政策")
+                movein_range = st.number_input('move_in_range')
+                
+      
     
             building_form_submitted = st.form_submit_button("添加公寓")
             
