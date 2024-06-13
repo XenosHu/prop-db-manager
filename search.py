@@ -57,7 +57,7 @@ def app():
             building_name = st.selectbox("公寓名称",get_building_name())
             min_price = st.number_input("最低价格", min_value=0, step=1, format='%d')
             max_price = st.number_input("最高价格", min_value=0, step=1, format='%d')
-            location_options = ["Any", "New Jersey", "Manhattan upper", "Manhattan mid", "Manhattan lower", "LIC", "Brooklyn"]
+            location_options = ["Any", "Newport","Grove st","Journal squared, "Manhattan upper", "Manhattan mid", "Manhattan lower", "LIC", "Brooklyn"]
             location = st.multiselect("位置", options=location_options, default=["Any"])
 
         with col2:
@@ -321,7 +321,7 @@ def app():
         # Store selected rows for deletion
         selected = grid_response['selected_rows']
         # st.write(type(selected))
-        if not selected.empty:
+        if selected is not None and len(selected) > 0:
             # st.write('after_select')
             st.session_state['selected_for_deletion'] = selected
             #st.write("Selected rows:", selected)
