@@ -45,6 +45,7 @@ def app():
                 # Column 2 fields
                 amenity = st.text_area("公寓设施")
                 movein_range = st.number_input("move_in_range", min_value=0, step=1, format='%d')
+                source = st.text_input('Source')
                 tavel_NYU = st.number_input("通勤NYU", min_value=0, step=1, format='%d')
                 tavel_CU = st.number_input("通勤哥大", min_value=0, step=1, format='%d')
                 tavel_PS = st.number_input("通勤Parsons", min_value=0, step=1, format='%d')
@@ -63,12 +64,12 @@ def app():
                     building_insert_query = """
                         INSERT INTO Building (
                             building_name, location, building_description, building_location_image, pet, 
-                            op,stu_no_guarantee,movein_range,travel_NYU,travel_ColumbiaUniversity,travel_Parsons,travel_SVA, amenity, address
-                        ) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
+                            op,stu_no_guarantee,movein_range,travel_NYU,travel_ColumbiaUniversity,travel_Parsons,travel_SVA, amenity, address,source
+                        ) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
                     """
                     cursor.execute(building_insert_query, (
                         building_name, location, building_description,building_location_image, pet, 
-                       op, stu_no_guar,movein_range,tavel_NYU,tavel_CU,tavel_PS,tavel_SVA, amenity, address
+                       op, stu_no_guar,movein_range,tavel_NYU,tavel_CU,tavel_PS,tavel_SVA, amenity, address, source
                     ))
     
                     connection.commit()
