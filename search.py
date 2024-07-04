@@ -177,21 +177,22 @@ def app():
             st.session_state['include_unit'] = True
         else:
             # Query to include only Building
-            search_query += """ Building.building_name AS 公寓名称,
-                                Building.op AS OP,
-                                Building.location AS 区域,
-                                Building.address AS 地址,
-                                Building.building_description AS 公寓描述,
-                                Building.building_location_image AS 公寓位置图片,
-                                Building.pet AS 宠物友好,
-                                Building.application_material AS 申请材料,
-                                Building.washer_dryer_image AS 公用洗烘设施图片,
-                                Building.amenity_image AS 设施图片,
-                                Building.guarantee_policy AS 担保政策,
-                                Building.source AS 来源,
-                                Building.website AS 公寓网站,
-                                Building.movein_range,
-                                Building.building_id FROM Building """
+            # search_query += """ Building.building_name AS 公寓名称,
+            #                     Building.op AS OP,
+            #                     Building.location AS 区域,
+            #                     Building.address AS 地址,
+            #                     Building.building_description AS 公寓描述,
+            #                     Building.building_location_image AS 公寓位置图片,
+            #                     Building.pet AS 宠物友好,
+            #                     Building.application_material AS 申请材料,
+            #                     Building.washer_dryer_image AS 公用洗烘设施图片,
+            #                     Building.amenity_image AS 设施图片,
+            #                     Building.guarantee_policy AS 担保政策,
+            #                     Building.source AS 来源,
+            #                     Building.website AS 公寓网站,
+            #                     Building.movein_range,
+            #                     Building.building_id FROM Building """
+            search_query += “SELECT * FROM Building"
             st.write("公寓:")
             st.session_state['include_building_only'] = True
             
@@ -311,7 +312,8 @@ def app():
                         else:
                             # Construct and execute UPDATE query for Building
                             building_update_query = "UPDATE Building SET "
-                            building_update_query += ", ".join([f"{building_column_name_mapping[col]} = '{updated_df.at[i, col]}'" for col in updated_df.columns if col in building_column_name_mapping])
+                            building_update_query += ", ".join([f"{col} = '{updated_df.at[i, col]}'" for col in updated_df.columns])
+                            # building_update_query += ", ".join([f"{building_column_name_mapping[col]} = '{updated_df.at[i, col]}'" for col in updated_df.columns if col in building_column_name_mapping])
                             building_update_query += f" WHERE building_id = {updated_df.at[i, 'building_id']}"
                             execute_write_query(building_update_query)
                         
