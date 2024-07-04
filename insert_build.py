@@ -32,20 +32,22 @@ def app():
     
             with col1:
                 # Column 1 fields
+                source = st.text_input('Source')
                 building_name = st.text_input("大楼名称")
-                location = st.selectbox("区域", ["New Jersey", "Manhattan upper", "Manhattan lower", "LIC", "Brooklyn", "Bronx", "Queens", "Other"])
-                building_description = st.text_area("大楼介绍")
                 address = st.text_input("address")
+                location = st.selectbox("区域", ["New Jersey", "Manhattan upper", "Manhattan lower", "LIC", "Brooklyn", "Bronx", "Queens", "Other"])
+                amenity = st.text_area("公寓设施")
+                
+    
+            with col2:
+                # Column 2 fields
+                building_description = st.text_area("大楼介绍")
                 building_location_image = st.text_input("大楼位置图片url")
                 pet = st.checkbox("宠物友好", value=False)
                 op = st.checkbox("OP", value=False)
                 stu_no_guar = st.checkbox("学生免担保", value=False)
-    
-            with col2:
-                # Column 2 fields
-                amenity = st.text_area("公寓设施")
                 movein_range = st.number_input("move_in_range", min_value=0, step=1, format='%d')
-                source = st.text_input('Source')
+                
                 tavel_NYU = st.number_input("通勤NYU", min_value=0, step=1, format='%d')
                 tavel_CU = st.number_input("通勤哥大", min_value=0, step=1, format='%d')
                 tavel_PS = st.number_input("通勤Parsons", min_value=0, step=1, format='%d')
