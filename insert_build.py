@@ -63,7 +63,7 @@ def app():
                     building_insert_query = """
                         INSERT INTO Building (
                             building_name, location, building_description, building_location_image, pet, 
-                            op,stu_no_guarantee,movein_range,travel_NYU,travel_ColumbiaUniversity,travel_Parsons,travel_SVA, amenityl, address
+                            op,stu_no_guarantee,movein_range,travel_NYU,travel_ColumbiaUniversity,travel_Parsons,travel_SVA, amenity, address
                         ) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
                     """
                     cursor.execute(building_insert_query, (
