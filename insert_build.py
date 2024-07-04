@@ -35,6 +35,7 @@ def app():
                 building_name = st.text_input("大楼名称")
                 location = st.selectbox("区域", ["New Jersey", "Manhattan upper", "Manhattan lower", "LIC", "Brooklyn", "Bronx", "Queens", "Other"])
                 building_description = st.text_area("大楼介绍")
+                address = st.text_input("address")
                 building_location_image = st.text_input("大楼位置图片url")
                 pet = st.checkbox("宠物友好", value=False)
                 op = st.checkbox("OP", value=False)
@@ -62,12 +63,12 @@ def app():
                     building_insert_query = """
                         INSERT INTO Building (
                             building_name, location, building_description, building_location_image, pet, 
-                            op,stu_no_guarantee,movein_range,travel_NYU,travel_ColumbiaUniversity,travel_Parsons,travel_SVA, amenity
-                        ) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
+                            op,stu_no_guarantee,movein_range,travel_NYU,travel_ColumbiaUniversity,travel_Parsons,travel_SVA, amenityl, address
+                        ) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
                     """
                     cursor.execute(building_insert_query, (
                         building_name, location, building_description,building_location_image, pet, 
-                       op, stu_no_guar,movein_range,tavel_NYU,tavel_CU,tavel_PS,tavel_SVA, amenity
+                       op, stu_no_guar,movein_range,tavel_NYU,tavel_CU,tavel_PS,tavel_SVA, amenity, address
                     ))
     
                     connection.commit()
