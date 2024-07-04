@@ -192,7 +192,7 @@ def app():
             #                     Building.website AS 公寓网站,
             #                     Building.movein_range,
             #                     Building.building_id FROM Building """
-            search_query += "* FROM Building"
+            search_query += " * FROM Building "
             st.write("公寓:")
             st.session_state['include_building_only'] = True
             
