@@ -150,8 +150,7 @@ def app():
                                 Building.amenity_image AS 设施图片,
                                 Building.guarantee_policy AS 担保政策,
                                 Building.source AS 来源,
-                                Building.website AS 公寓网站,
-                                Building.building_id FROM Unit """
+                                Building.website AS 公寓网站 FROM Unit """
             join_conditions += "JOIN Building ON Unit.building_id = Building.building_id "
             if movein_date and if_time:
                 search_conditions.append(f"Unit.available_date <= '{movein_date}' AND Unit.movein_before >= '{movein_date}'")
