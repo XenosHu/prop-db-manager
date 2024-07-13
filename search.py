@@ -140,20 +140,7 @@ def app():
         elif include_unit:
             # Query to include Unit and Building
             search_query += """ Building.building_name AS 公寓名称,
-                                Unit.unit_number AS 单元号,
-                                Unit.rent_price AS 租金,
-                                Unit.floorplan AS 户型,
-                                Unit.floorplan_image AS 户型图,
-                                Unit.unit_video AS 单元视频,
-                                Unit.size AS 面积sqft,
-                                Unit.broker_fee AS 中介费,
-                                Unit.concession AS 优惠政策,
-                                Unit.direction AS 朝向, 
-                                Unit.unit_description AS 单元描述,
-                                Unit.available_date AS Availability,
-                                Unit.movein_before,
-                                Unit.washer_dryer AS 室内洗烘,
-                                Unit.on_market AS "On Market",
+                                Unit.*,
                                 Building.location AS 区域,
                                 Building.building_description AS 公寓描述,
                                 Building.building_location_image AS 公寓位置图片,
@@ -164,7 +151,6 @@ def app():
                                 Building.guarantee_policy AS 担保政策,
                                 Building.source AS 来源,
                                 Building.website AS 公寓网站,
-                                Unit.unit_id,
                                 Building.building_id FROM Unit """
             join_conditions += "JOIN Building ON Unit.building_id = Building.building_id "
             if movein_date and if_time:
