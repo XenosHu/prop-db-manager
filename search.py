@@ -279,28 +279,30 @@ def app():
                     }
                  
                     # Handle updates for Building, Unit, and Sub_Unit
-                    for i in updated_df.index:
-                        if is_subunit_included:
-                            # Construct and execute UPDATE query for Sub_Unit
-                            sub_unit_update_query = "UPDATE sub_unit SET "
-                            sub_unit_update_query += ", ".join([f"{sub_unit_column_name_mapping[col]} = '{updated_df.at[i, col]}'" for col in updated_df.columns if col in sub_unit_column_name_mapping])
-                            sub_unit_update_query += f" WHERE sub_unit_id = {updated_df.at[i, 'sub_unit_id']}"
-                            execute_write_query(sub_unit_update_query)
-    
-                        elif is_unit_included:
-                            # Construct and execute UPDATE query for Unit
-                            unit_update_query = "UPDATE Unit SET "
-                            unit_update_query += ", ".join([f"{unit_column_name_mapping[col]} = '{updated_df.at[i, col]}'" for col in updated_df.columns if col in unit_column_name_mapping])
-                            unit_update_query += f" WHERE unit_id = {updated_df.at[i, 'unit_id']}"
-                            execute_write_query(unit_update_query)
-    
-                        else:
-                            # Construct and execute UPDATE query for Building
-                            building_update_query = "UPDATE Building SET "
-                            building_update_query += ", ".join([f"{col} = '{updated_df.at[i, col]}'" for col in updated_df.columns])
-                            # building_update_query += ", ".join([f"{building_column_name_mapping[col]} = '{updated_df.at[i, col]}'" for col in updated_df.columns if col in building_column_name_mapping])
-                            building_update_query += f" WHERE building_id = {updated_df.at[i, 'building_id']}"
-                            execute_write_query(building_update_query)
+                    # for i in updated_df.index:
+                    for i, row in updated_df.iterrows():
+                        if not row.equals(df.loc[i]):
+                            if is_subunit_included:
+                                # Construct and execute UPDATE query for Sub_Unit
+                                sub_unit_update_query = "UPDATE sub_unit SET "
+                                sub_unit_update_query += ", ".join([f"{sub_unit_column_name_mapping[col]} = '{updated_df.at[i, col]}'" for col in updated_df.columns if col in sub_unit_column_name_mapping])
+                                sub_unit_update_query += f" WHERE sub_unit_id = {updated_df.at[i, 'sub_unit_id']}"
+                                execute_write_query(sub_unit_update_query)
+        
+                            elif is_unit_included:
+                                # Construct and execute UPDATE query for Unit
+                                unit_update_query = "UPDATE Unit SET "
+                                unit_update_query += ", ".join([f"{unit_column_name_mapping[col]} = '{updated_df.at[i, col]}'" for col in updated_df.columns if col in unit_column_name_mapping])
+                                unit_update_query += f" WHERE unit_id = {updated_df.at[i, 'unit_id']}"
+                                execute_write_query(unit_update_query)
+        
+                            else:
+                                # Construct and execute UPDATE query for Building
+                                building_update_query = "UPDATE Building SET "
+                                building_update_query += ", ".join([f"{col} = '{updated_df.at[i, col]}'" for col in updated_df.columns])
+                                # building_update_query += ", ".join([f"{building_column_name_mapping[col]} = '{updated_df.at[i, col]}'" for col in updated_df.columns if col in building_column_name_mapping])
+                                building_update_query += f" WHERE building_id = {updated_df.at[i, 'building_id']}"
+                                execute_write_query(building_update_query)
                         
                     st.success("更新成功！")
 
