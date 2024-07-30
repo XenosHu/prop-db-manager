@@ -278,10 +278,10 @@ def app():
                         '兴趣点ID': 'interest_pp_id'
                     }
 
-                    df = df.reset_index(drop=True)
-                    df.drop(columns = ['available_date','movein_before',latest_update'],inplace = True)
-                    updated_df = updated_df.reset_index(drop=True)
-                    updated_df.drop(columns = ['available_date','movein_before',latest_update'],inplace = True)
+                    # df = df.reset_index(drop=True)
+                    # df.drop(columns = ['available_date','movein_before',latest_update'],inplace = True)
+                    # updated_df = updated_df.reset_index(drop=True)
+                    # updated_df.drop(columns = ['available_date','movein_before',latest_update'],inplace = True)
                         
                     # Handle updates for Building, Unit, and Sub_Unit
                     # for i in updated_df.index:
