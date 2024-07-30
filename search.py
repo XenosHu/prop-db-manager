@@ -237,37 +237,37 @@ def app():
                     # st.write(is_building_only,is_building_only,is_subunit_included)
                     
                     building_column_name_mapping = {
-                        '公寓名称': 'building_name',
-                        '区域': 'location',
-                        '地址': 'address',
-                        '公寓描述': 'building_description',
-                        '公寓位置图片': 'building_location_image',
-                        '宠物友好': 'pet',
-                        '申请材料': 'application_material',
-                        '公用洗烘设施图片': 'washer_dryer_image',
-                        '设施图片': 'amenity_image',
-                        '担保政策': 'guarantee_policy',
-                        '来源': 'source',
-                        '公寓网站': 'website',
+                        'building_name': 'building_name',
+                        'location': 'location',
+                        'address': 'address',
+                        'building_description': 'building_description',
+                        'building_location_image': 'building_location_image',
+                        'pet': 'pet',
+                        'application_material': 'application_material',
+                        'washer_dryer_image': 'washer_dryer_image',
+                        'amenity_image': 'amenity_image',
+                        'guarantee_policy': 'guarantee_policy',
+                        'source': 'source',
+                        'website': 'website',
                         'OP':'op',
                         'movein_range': 'movein_range'
                     }
 
                     
                     unit_column_name_mapping = {
-                        '单元号': 'unit_number',
-                        '租金': 'rent_price',
-                        '户型': 'floorplan',
-                        '户型图': 'floorplan_image',
-                        '面积sqft': 'size',
-                        '优惠政策': 'concession',
-                        '朝向': 'direction',
-                        '单元视频': 'unit_video',
-                        '单元描述': 'unit_description',
-                        '中介费': 'broker_fee',
-                        'Availability': 'available_date',
-                        '室内洗烘': 'washer_dryer',
-                        'On Market':'on_market',
+                        'unit_number': 'unit_number',
+                        'rent_price': 'rent_price',
+                        'floorplan': 'floorplan',
+                        'floorplan_image': 'floorplan_image',
+                        'size': 'size',
+                        'concession': 'concession',
+                        'direction': 'direction',
+                        'unit_video': 'unit_video',
+                        'unit_description': 'unit_description',
+                        'broker_fee': 'broker_fee',
+                        'available_date': 'available_date',
+                        'washer_dryer': 'washer_dryer',
+                        'on_market':'on_market',
                         
                     }
 
