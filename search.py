@@ -277,7 +277,11 @@ def app():
                         '客厅住人': 'use_livingroom',
                         '兴趣点ID': 'interest_pp_id'
                     }
-                 
+
+                    df = df.reset_index(drop=True)
+                   
+                    updated_df = updated_df.reset_index(drop=True)
+            
                     # Handle updates for Building, Unit, and Sub_Unit
                     # for i in updated_df.index:
                     for i, row in updated_df.iterrows():
