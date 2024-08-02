@@ -279,7 +279,6 @@ def app():
                     }
 
                     df = df.reset_index(drop=True)
-                    
                     updated_df = updated_df.reset_index(drop=True)
                     if is_unit_included:
                         df.drop(columns = ['available_date','movein_before','latest_update'],inplace = True)
