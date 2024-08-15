@@ -119,7 +119,7 @@ def app():
                                 Building.application_material AS 申请材料,
                                 Building.washer_dryer_image AS 公用洗烘设施图片,
                                 Building.amenity_image AS 设施图片,
-                                Building.guarantee_policy AS 担保政策,
+                                Building.gurantee_policy AS 担保政策,
                                 Building.source AS 来源,
                                 Building.website AS 公寓网站,
                                 sub_unit.sub_unit_id FROM sub_unit """
@@ -148,7 +148,7 @@ def app():
                                 Building.application_material AS 申请材料,
                                 Building.washer_dryer_image AS 公用洗烘设施图片,
                                 Building.amenity_image AS 设施图片,
-                                Building.guarantee_policy AS 担保政策,
+                                Building.gurantee_policy AS 担保政策,
                                 Building.source AS 来源,
                                 Building.website AS 公寓网站 FROM Unit """
             join_conditions += "JOIN Building ON Unit.building_id = Building.building_id "
