@@ -182,7 +182,7 @@ def app():
             st.session_state['include_building_only'] = True
             
         if building_name != 'All':
-            search_conditions.append(f"Building.Building_name LIKE '%{building_name}%'")
+            search_conditions.append(f"Building.Building_name = '{building_name}'")
         if min_price and max_price:
             search_conditions.append(f"Unit.rent_price BETWEEN {min_price} AND {max_price}")
         if location != ['Any']:
