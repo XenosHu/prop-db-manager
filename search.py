@@ -57,7 +57,7 @@ def app():
             building_name = st.selectbox("公寓名称",get_building_name())
             min_price = st.number_input("最低价格", min_value=0, step=1, format='%d')
             max_price = st.number_input("最高价格", min_value=0, step=1, format='%d')
-            location_options = ["Any", "Newport","Grove st","Journal squared", "Manhattan uppereast", "Manhattan midtown", "Manhattan downtown", "LIC", "Brooklyn"]
+            location_options = ["Any", "Newport","Grove st","Journal squared", "Manhattan uppereast", "Manhattan midtown west","Manhattan midtown east", "Manhattan downtown", "LIC", "Brooklyn"]
             location = st.multiselect("位置", options=location_options, default=["Any"])
 
         with col2:
